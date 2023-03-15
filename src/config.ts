@@ -28,3 +28,17 @@ export function defineConfig(config: Config): Config {
 export function getConfigPath() {
   return path.resolve(process.cwd(), 'dash.config.ts');
 }
+
+declare global {
+  interface Window {
+    configPath: string;
+  }
+}
+
+export async function loadConfig() {
+  const dynamicImport = new Function('file', 'return import(file)');
+  const configPath =
+    typeof window !== 'undefined' ? window.configPath : getConfigPath();
+  const config = await dynamicImport(configPath);
+  return config.default;
+}

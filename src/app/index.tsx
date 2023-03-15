@@ -1,19 +1,13 @@
 import '@danteissaias/ds/index.css';
 import * as React from 'react';
 import { createRoot } from 'react-dom/client';
+import { loadConfig } from '../config';
 
 const root = document.getElementById('root');
 if (!root) throw new Error('No root element found');
 
-declare global {
-  interface Window {
-    configPath: string;
-  }
-}
-
-const dynamicImport = new Function('file', 'return import(file)');
-const config = await dynamicImport(window.configPath);
-console.log(config.default);
+const config = await loadConfig();
+console.log({ config });
 
 createRoot(root).render(
   <React.StrictMode>

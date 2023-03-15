@@ -1,7 +1,9 @@
 import rootPath from 'app-root-path';
 import express from 'express';
 import { createServer as createViteServer } from 'vite';
-import { getConfigPath } from './config';
+import { getConfigPath, loadConfig } from './config';
+import { getPrismaClient } from './prisma';
+const { PrismaClient } = await getPrismaClient();
 
 export interface ServerOptions {
   isProd?: boolean;
@@ -11,6 +13,14 @@ export async function createServer({
   isProd = process.env.NODE_ENV === 'production',
 }: ServerOptions) {
   const app = express();
+  const config = await loadConfig();
+  const prisma = new PrismaClient();
+
+  const keys = Object.keys(config.schemas);
+  for (const key of keys) {
+    if (key in prisma) continue;
+    throw new Error(`Model "${key}" not found in Prisma Client`);
+  }
 
   const rootDir = rootPath.resolve(isProd ? 'dist/app' : '');
 
@@ -22,8 +32,14 @@ export async function createServer({
     define: { configPath: `"${getConfigPath()}"` },
   });
 
-  app.get('/api', (req, res) => {
-    res.send('Hello from API');
+  app.get('/api', async (req, res) => {
+    const data: Record<string, any> = {};
+
+    for (const key of keys) {
+      data[key] = await prisma[key].findMany();
+    }
+
+    res.json(data);
   });
 
   app.use(vite.middlewares);

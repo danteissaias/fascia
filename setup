@@ -3,3 +3,4 @@
 pnpm i
 pnpm -C dev i
 pnpm -C dev run db
+pnpm -C dev seed
