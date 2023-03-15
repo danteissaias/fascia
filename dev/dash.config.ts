@@ -1,14 +1,7 @@
 import { toast } from '@danteissaias/ds';
+import { User } from '@prisma/client';
 import { Mail, ShoppingCart } from 'react-feather';
 import { defineAction, defineConfig } from '../src';
-
-export interface User {
-  name: string;
-  email: string;
-  createdAt: string;
-  type: 'subuser' | 'customer';
-  customerId?: string;
-}
 
 const forgotPassword = defineAction<User>(({ document }) => ({
   label: 'Send password recovery',
