@@ -17,6 +17,6 @@ console.log(config.default);
 
 createRoot(root).render(
   <React.StrictMode>
-    <div>Hello World</div>
+    <div>Check the console to see if the config has loaded...</div>
   </React.StrictMode>
 );

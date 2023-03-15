@@ -1,5 +1,9 @@
 {
+  "scripts": {
+    "db": "prisma db push"
+  },
   "dependencies": {
-    "@prisma/client": "^4.11.0"
+    "@prisma/client": "^4.11.0",
+    "prisma": "^4.11.0"
   }
 }

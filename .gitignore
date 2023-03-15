@@ -8,3 +8,4 @@ target
 next-env.d.ts
 .turbo
 test.tsx
+dev.db

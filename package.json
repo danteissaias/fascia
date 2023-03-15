@@ -1,9 +1,7 @@
 {
   "type": "module",
   "scripts": {
-    "build": "run-s build-app build-bundle",
-    "build-app": "vite build",
-    "build-bundle": "tsup src/index.ts"
+    "dev": "ts-node --cwd ./dev ../src/run.ts"
   },
   "dependencies": {
     "@danteissaias/ds": "^0.0.15",

@@ -1,0 +1,5 @@
+#!/bin/sh
+
+pnpm i
+pnpm -C dev i
+pnpm -C dev run db
