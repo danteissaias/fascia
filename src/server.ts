@@ -1,13 +1,20 @@
 import rootPath from 'app-root-path';
 import express from 'express';
+import * as path from 'path';
 import { createServer as createViteServer } from 'vite';
 import { getConfigPath, loadConfig } from './config';
-import { getPrismaClient } from './prisma';
-const { PrismaClient } = await getPrismaClient();
 
 export interface ServerOptions {
   isProd?: boolean;
 }
+
+async function getPrismaClient() {
+  const dynamicImport = new Function('file', 'return import(file)');
+  const prismaPath = path.resolve(process.cwd(), 'node_modules/@prisma/client');
+  return await dynamicImport(prismaPath);
+}
+
+const { PrismaClient } = await getPrismaClient();
 
 export async function createServer({
   isProd = process.env.NODE_ENV === 'production',
