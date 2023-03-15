@@ -1,4 +1,5 @@
 import { ColumnDef } from '@tanstack/react-table';
+import * as path from 'path';
 
 export type DocumentAction<T> = (props: { document: T }) => {
   label: string;
@@ -25,5 +26,5 @@ export function defineConfig(config: Config): Config {
 }
 
 export function getConfigPath() {
-  return '/Users/dante/repos/dash/dev/dash.config.ts';
+  return path.resolve(process.cwd(), 'dash.config.ts');
 }

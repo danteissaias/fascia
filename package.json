@@ -1,7 +1,7 @@
 {
   "type": "module",
   "scripts": {
-    "dev": "ts-node --cwd ./dev ../src/run.ts"
+    "dev": "cd dev && ts-node ../src/run.ts"
   },
   "dependencies": {
     "@danteissaias/ds": "^0.0.15",
