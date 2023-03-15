@@ -1,29 +1,5 @@
 import { Mail, ShoppingCart } from 'react-feather';
-import { ColumnDef } from '@tanstack/react-table';
-
-type DocumentAction<T> = (props: { document: T }) => {
-  label: string;
-  onHandle: () => void | Promise<void>;
-  icon?: React.ElementType;
-};
-
-function defineAction<T>(action: DocumentAction<T>): DocumentAction<T> {
-  return action;
-}
-
-interface Schema<T> {
-  name: string;
-  actions: DocumentAction<T>[];
-  columns: ColumnDef<T, any>[];
-}
-
-interface Config {
-  schemas: Record<string, Schema<any>>;
-}
-
-function defineConfig(config: Config): Config {
-  return config;
-}
+import { defineAction, defineConfig } from '../src';
 
 export interface User {
   name: string;
