@@ -1,7 +1,10 @@
 import { ColumnDef } from '@tanstack/react-table';
 import * as path from 'path';
 
-export type DocumentAction<T> = (props: { document: T }) => {
+export type DocumentAction<T> = (props: {
+  document: T;
+  removeDocument: () => Promise<void>;
+}) => {
   label: string;
   onHandle: () => void | Promise<void>;
   danger?: boolean;
@@ -13,7 +16,8 @@ export function defineAction<T>(action: DocumentAction<T>): DocumentAction<T> {
 }
 
 export interface Schema<T> {
-  name: string;
+  // TODO: Infer this from the model
+  where: (document: T) => Record<string, any>;
   actions: DocumentAction<T>[];
   columns: ColumnDef<T, any>[];
 }
@@ -37,9 +41,7 @@ declare global {
 }
 
 export async function loadConfig() {
-  const dynamicImport = new Function('file', 'return import(file)');
   const configPath =
     typeof window !== 'undefined' ? window.configPath : getConfigPath();
-  const config = await dynamicImport(configPath);
-  return config.default;
+  return await import(/* @vite-ignore */ configPath).then((mod) => mod.default);
 }

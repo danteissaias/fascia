@@ -1,7 +1,9 @@
-import { Toaster } from '@danteissaias/ds';
 import '@danteissaias/ds/index.css';
+
+import { Toaster } from '@danteissaias/ds';
 import * as React from 'react';
 import { createRoot } from 'react-dom/client';
+
 import { loadConfig } from '../config';
 import App from './App';
 

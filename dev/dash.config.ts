@@ -1,7 +1,7 @@
 import { toast } from '@danteissaias/ds';
 import { User } from '@prisma/client';
 import { Mail, ShoppingCart } from 'react-feather';
-import { defineAction, defineConfig } from '../src';
+import { defineAction, defineConfig, Schema } from '../src';
 
 const forgotPassword = defineAction<User>(({ document }) => ({
   label: 'Send password recovery',
@@ -27,8 +27,8 @@ const paymentHistory = defineAction<User>(({ document }) => ({
 
 export default defineConfig({
   schemas: {
-    user: {
-      name: 'Users',
+    User: {
+      where: (document) => ({ id: document.id }),
       actions: [forgotPassword, paymentHistory],
       columns: [
         { accessorKey: 'name', header: 'Name' },
