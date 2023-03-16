@@ -1,4 +1,4 @@
-import { Button, DataTable, toast } from '@danteissaias/ds';
+import { DataTable } from '@danteissaias/ds';
 import { useEffect, useState } from 'react';
 import type { Config } from '../config';
 
@@ -21,6 +21,7 @@ export default function App({ config }: AppProps) {
         <div key={i} style={{ maxWidth: 800 }}>
           <h3>{schema.name}</h3>
           <DataTable
+            selectable
             columns={schema.columns}
             data={data[key]}
             rowActions={(document) =>

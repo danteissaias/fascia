@@ -4,6 +4,7 @@ import * as path from 'path';
 export type DocumentAction<T> = (props: { document: T }) => {
   label: string;
   onHandle: () => void | Promise<void>;
+  danger?: boolean;
   icon?: React.ElementType;
 };
 
