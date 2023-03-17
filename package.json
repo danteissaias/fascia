@@ -4,7 +4,7 @@
     "dev": "cd dev && ts-node ../src/run.ts"
   },
   "devDependencies": {
-    "@danteissaias/ds": "^0.0.21",
+    "@danteissaias/ds": "^0.0.25",
     "@prisma/generator-helper": "^4.11.0",
     "@prisma/internals": "^4.11.0",
     "@tanstack/react-table": "^8.7.9",

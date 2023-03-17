@@ -1,7 +1,7 @@
 lockfileVersion: 5.4
 
 specifiers:
-  '@danteissaias/ds': ^0.0.21
+  '@danteissaias/ds': ^0.0.25
   '@prisma/generator-helper': ^4.11.0
   '@prisma/internals': ^4.11.0
   '@tanstack/react-table': ^8.7.9
@@ -24,7 +24,7 @@ specifiers:
   zod: ^3.21.4
 
 devDependencies:
-  '@danteissaias/ds': 0.0.21_zula6vjvt3wdocc4mwcxqa6nzi
+  '@danteissaias/ds': 0.0.25_zula6vjvt3wdocc4mwcxqa6nzi
   '@prisma/generator-helper': 4.11.0
   '@prisma/internals': 4.11.0
   '@tanstack/react-table': 8.7.9_biqbaboplfbrettd7655fr4n2y
@@ -83,8 +83,8 @@ packages:
       '@jridgewell/trace-mapping': 0.3.9
     dev: true
 
-  /@danteissaias/ds/0.0.21_zula6vjvt3wdocc4mwcxqa6nzi:
-    resolution: {integrity: sha512-Kxkt5/5cnbw/onOTH8bTFnmaOp3m4MkDQqfMeiIdlkAeDkC1n2zmrMtGq1xPpv06CTeLBmNFVnG08g6Lbkw4YA==}
+  /@danteissaias/ds/0.0.25_zula6vjvt3wdocc4mwcxqa6nzi:
+    resolution: {integrity: sha512-JP0RZ/Vimnq3+LqzAzd4uACmA16u1tIf1czSK2LEfci2XiXeOe9CTBly14+dOlUVP/x0GDCO4Mtrp4Fn3bcJLA==}
     engines: {node: '>=14.17.0'}
     peerDependencies:
       react: ^18.2.0
