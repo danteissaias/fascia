@@ -71,16 +71,6 @@ export async function createServer({
 
   app.use(bodyParser.json());
 
-  app.get('/api', async (req, res) => {
-    const data: Record<string, any> = {};
-
-    for (const key of keys) {
-      data[key] = await prisma[key].findMany();
-    }
-
-    res.json({ data });
-  });
-
   app.post('/rpc', async (req, res) => {
     const { modelName, operation, args = {} } = req.body;
     res.json(await prisma[modelName][operation](args));
