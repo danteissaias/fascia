@@ -14,5 +14,6 @@ model User {
   id        Int      @id @default(autoincrement())
   email     String   @unique
   name      String
+  type      String
   createdAt DateTime @default(now())
 }

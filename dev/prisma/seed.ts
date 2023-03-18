@@ -2,9 +2,10 @@ import { PrismaClient } from '@prisma/client';
 
 const prisma = new PrismaClient();
 const users = [
-  { email: 'john@doe.com', name: 'John Doe' },
-  { email: 'robert@roe.com', name: 'Robert Roe' },
-  { email: 'dante@issaias.com', name: 'Dante Issaias' },
+  { email: 'john@doe.com', name: 'John Doe', type: 'customer' },
+  { email: 'robert@roe.com', name: 'Robert Roe', type: 'customer' },
+  { email: 'dante@issaias.com', name: 'Dante Issaias', type: 'subuser' },
+  { email: 'jane@doe.com', name: 'Jane Doe', type: 'customer' },
 ];
 
 async function main() {

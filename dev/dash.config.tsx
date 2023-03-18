@@ -1,4 +1,4 @@
-import { toast } from '@danteissaias/ds';
+import { Badge, toast } from '@danteissaias/ds';
 import { User } from '@prisma/client';
 import { Mail, ShoppingCart } from 'react-feather';
 import { defineAction, defineConfig, Schema } from '../src';
@@ -29,11 +29,16 @@ export default defineConfig({
   schemas: {
     User: {
       where: (document) => ({ id: document.id }),
-      actions: [forgotPassword, paymentHistory],
+      rowActions: [forgotPassword, paymentHistory],
       columns: [
         { accessorKey: 'name', header: 'Name' },
         { accessorKey: 'email', header: 'Email' },
         { accessorKey: 'createdAt', header: 'Created at' },
+        {
+          accessorKey: 'type',
+          header: 'Type',
+          cell: ({ getValue }) => <Badge>{getValue()}</Badge>,
+        },
       ],
     },
   },

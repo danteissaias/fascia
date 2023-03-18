@@ -1,13 +1,23 @@
 import { ColumnDef } from '@tanstack/react-table';
 import * as path from 'path';
 
+export type HeaderAction<T> = (props: {
+  documents: T[];
+  removeDocuments: () => Promise<void>;
+}) => {
+  label: string;
+  onHandle: () => void | Promise<void>;
+  type?: 'default' | 'danger' | 'success';
+  icon?: React.ElementType;
+};
+
 export type DocumentAction<T> = (props: {
   document: T;
   removeDocument: () => Promise<void>;
 }) => {
   label: string;
   onHandle: () => void | Promise<void>;
-  danger?: boolean;
+  type?: 'default' | 'danger';
   icon?: React.ElementType;
 };
 
@@ -18,7 +28,7 @@ export function defineAction<T>(action: DocumentAction<T>): DocumentAction<T> {
 export interface Schema<T> {
   // TODO: Infer this from the model
   where: (document: T) => Record<string, any>;
-  actions: DocumentAction<T>[];
+  rowActions: DocumentAction<T>[];
   columns: ColumnDef<T, any>[];
 }
 
@@ -31,7 +41,7 @@ export function defineConfig(config: Config): Config {
 }
 
 export function getConfigPath() {
-  return path.resolve(process.cwd(), 'dash.config.ts');
+  return path.resolve(process.cwd(), 'dash.config.tsx');
 }
 
 declare global {
