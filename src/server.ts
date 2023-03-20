@@ -3,6 +3,7 @@ import bodyParser from 'body-parser';
 import express from 'express';
 import * as path from 'path';
 import { createServer as createViteServer } from 'vite';
+
 import { getConfigPath, loadConfig } from './config';
 
 export interface ServerOptions {
@@ -23,6 +24,7 @@ export async function createServer({
   const { PrismaClient } = await getPrismaClient();
 
   const app = express();
+
   const config = await loadConfig();
   const prisma = new PrismaClient();
 
@@ -36,9 +38,8 @@ export async function createServer({
 
   const vite = await createViteServer({
     server: { middlewareMode: true },
-    logLevel: isProd ? 'error' : 'info',
+    logLevel: 'error',
     root: rootDir,
-    mode: isProd ? 'production' : 'development',
     define: { configPath: `"${getConfigPath()}"` },
   });
 

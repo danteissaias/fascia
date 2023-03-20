@@ -1,6 +1,6 @@
 {
   "name": "@danteissaias/dash",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "license": "MIT",
   "type": "module",
   "files": [
@@ -26,6 +26,7 @@
       "types": "./dist/server.d.ts"
     }
   },
+  "bin": "./dist/run.js",
   "scripts": {
     "dev": "cd dev && tsx ../dev.ts",
     "build": "tsup && vite build --outDir ./dist/app",
