@@ -1,11 +1,10 @@
-import rootPath from 'app-root-path';
+import { transform } from '@swc-node/core';
 import bodyParser from 'body-parser';
 import express from 'express';
-import * as path from 'path';
-import { createServer as createViteServer } from 'vite';
-import { transform } from '@swc-node/core';
 import * as fs from 'fs';
+import * as path from 'path';
 import { pathToFileURL } from 'url';
+import { createServer as createViteServer } from 'vite';
 
 function getConfigPath() {
   return path.resolve(process.cwd(), 'dash.config.tsx');
@@ -64,13 +63,10 @@ export async function createServer({
     throw new Error(`Model "${key}" not found in Prisma Client`);
   }
 
-  const rootDir = rootPath.resolve(isProd ? 'app' : '');
-  console.log({
-    rootDir,
-    rootPath: rootPath.toString(),
-    importMetaUrl: import.meta.url,
-    test: path.resolve(import.meta.url, '../dist/app'),
-  });
+  const rootDir = path.resolve(
+    import.meta.url,
+    isProd ? '../../dist/app' : '../'
+  );
 
   const vite = await createViteServer({
     server: { middlewareMode: true },
