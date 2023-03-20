@@ -2,35 +2,19 @@ import rootPath from 'app-root-path';
 import bodyParser from 'body-parser';
 import express from 'express';
 import * as path from 'path';
-import { pathToFileURL } from 'url';
 import { createServer as createViteServer } from 'vite';
-
-export function getConfigPath() {
-  const filePath = path.resolve(process.cwd(), 'dash.config.tsx');
-  return pathToFileURL(filePath).href;
-}
-
-declare global {
-  interface Window {
-    configPath: string;
-  }
-}
-
-export async function loadConfig() {
-  const configPath =
-    typeof window !== 'undefined' ? window.configPath : getConfigPath();
-  return await import(/* @vite-ignore */ configPath).then((mod) => mod.default);
-}
+import { getConfigPath, loadConfig } from './config';
 
 export interface ServerOptions {
   isProd?: boolean;
 }
 
+const PRISMA_MODULE = 'node_modules/prisma/prisma-client/index.js';
+
 async function getPrismaClient() {
   const cwd = process.cwd();
-  const prismaPath = path.resolve(cwd, './node_modules/@prisma/client');
-  const fileUrl = pathToFileURL(prismaPath).href;
-  return await import(/* @vite-ignore */ fileUrl);
+  const prismaPath = path.resolve(cwd, PRISMA_MODULE);
+  return await import(/* @vite-ignore */ prismaPath);
 }
 
 export async function createServer({
