@@ -68,6 +68,8 @@ export async function createServer({
     isProd ? '../../dist/app' : '../'
   );
 
+  console.log({ rootDir });
+
   const vite = await createViteServer({
     server: { middlewareMode: true },
     logLevel: 'error',
