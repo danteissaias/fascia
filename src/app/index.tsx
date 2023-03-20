@@ -4,13 +4,20 @@ import { Toaster } from '@danteissaias/ds';
 import * as React from 'react';
 import { createRoot } from 'react-dom/client';
 
-import { loadConfig } from '../config';
 import App from './App';
 
 const root = document.getElementById('root');
 if (!root) throw new Error('No root element found');
 
-const config = await loadConfig();
+declare global {
+  interface Window {
+    configPath: string;
+  }
+}
+
+const dynamicImport = (mod: string) =>
+  import(/* @vite-ignore */ mod).then((mod) => mod.default);
+const config = await dynamicImport(window.configPath);
 
 createRoot(root).render(
   <React.StrictMode>

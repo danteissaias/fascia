@@ -3,8 +3,38 @@ import bodyParser from 'body-parser';
 import express from 'express';
 import * as path from 'path';
 import { createServer as createViteServer } from 'vite';
+import { transform } from '@swc-node/core';
+import * as fs from 'fs';
+import { pathToFileURL } from 'url';
 
-import { getConfigPath, loadConfig } from './config';
+function getConfigPath() {
+  return path.resolve(process.cwd(), 'dash.config.tsx');
+}
+
+const dynamicImport = (mod: string) =>
+  import(/* @vite-ignore */ mod).then((mod) => mod.default);
+
+async function loadConfig() {
+  const configPath = getConfigPath();
+  const rawConfig = fs.readFileSync(configPath, 'utf-8');
+  const { code } = await transform(rawConfig, configPath, {
+    target: 'es2020',
+    module: 'es6',
+  });
+  const fileBase = `dash.config.timestamp-${Date.now()}`;
+  const fileNameTmp = `${fileBase}.mjs`;
+  const fileUrl = `${pathToFileURL(fileBase)}.mjs`;
+  fs.writeFileSync(fileNameTmp, code);
+  try {
+    return await dynamicImport(fileUrl);
+  } finally {
+    try {
+      fs.unlinkSync(fileNameTmp);
+    } catch {
+      // already removed if this function is called twice simultaneously
+    }
+  }
+}
 
 export interface ServerOptions {
   isProd?: boolean;
