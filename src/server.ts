@@ -2,7 +2,6 @@ import bodyParser from 'body-parser';
 import express from 'express';
 import * as path from 'path';
 import { createServer as createViteServer } from 'vite';
-import dynamicImport from 'vite-plugin-dynamic-import';
 import { Config } from './config';
 
 export interface ServerOptions {
