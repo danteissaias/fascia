@@ -15,7 +15,8 @@ declare global {
   }
 }
 
-const config = await import(window.configPath).then((mod) => mod.default);
+// @ts-ignore
+const config = await import('@/config').then((mod) => mod.default);
 
 createRoot(root).render(
   <React.StrictMode>

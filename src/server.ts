@@ -1,9 +1,8 @@
 import bodyParser from 'body-parser';
 import express from 'express';
-import * as fs from 'fs';
 import * as path from 'path';
-import { fileURLToPath, pathToFileURL } from 'url';
 import { createServer as createViteServer } from 'vite';
+import dynamicImport from 'vite-plugin-dynamic-import';
 import { Config } from './config';
 
 export interface ServerOptions {
@@ -52,7 +51,7 @@ export async function createServer({
     server: { middlewareMode: true },
     logLevel: 'error',
     root: rootDir,
-    define: { configPath: `"${configPath}"` },
+    resolve: { alias: { '@/config': configPath } },
   });
 
   app.use(bodyParser.json());
