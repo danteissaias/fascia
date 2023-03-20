@@ -1,6 +1,5 @@
 import { ColumnDef } from '@tanstack/react-table';
 import * as path from 'path';
-import { pathToFileURL } from 'url';
 
 export type HeaderAction<T> = (props: {
   documents: T[];
@@ -39,21 +38,4 @@ export interface Config {
 
 export function defineConfig(config: Config): Config {
   return config;
-}
-
-export function getConfigPath() {
-  const filePath = path.resolve(process.cwd(), 'dash.config.tsx');
-  return pathToFileURL(filePath).href;
-}
-
-declare global {
-  interface Window {
-    configPath: string;
-  }
-}
-
-export async function loadConfig() {
-  const configPath =
-    typeof window !== 'undefined' ? window.configPath : getConfigPath();
-  return await import(/* @vite-ignore */ configPath).then((mod) => mod.default);
 }

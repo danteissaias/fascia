@@ -4,7 +4,23 @@ import express from 'express';
 import * as path from 'path';
 import { pathToFileURL } from 'url';
 import { createServer as createViteServer } from 'vite';
-import { getConfigPath, loadConfig } from './config';
+
+export function getConfigPath() {
+  const filePath = path.resolve(process.cwd(), 'dash.config.tsx');
+  return pathToFileURL(filePath).href;
+}
+
+declare global {
+  interface Window {
+    configPath: string;
+  }
+}
+
+export async function loadConfig() {
+  const configPath =
+    typeof window !== 'undefined' ? window.configPath : getConfigPath();
+  return await import(/* @vite-ignore */ configPath).then((mod) => mod.default);
+}
 
 export interface ServerOptions {
   isProd?: boolean;
