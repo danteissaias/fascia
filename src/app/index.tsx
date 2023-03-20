@@ -5,18 +5,18 @@ import * as React from 'react';
 import { createRoot } from 'react-dom/client';
 
 import App from './App';
+import type { Config } from '../config';
 
 const root = document.getElementById('root');
 if (!root) throw new Error('No root element found');
 
 declare global {
   interface Window {
-    configPath: string;
+    getConfig: () => Promise<Config>;
   }
 }
 
-// @ts-ignore
-const config = await import('@/config').then((mod) => mod.default);
+const config = await window.getConfig();
 
 createRoot(root).render(
   <React.StrictMode>

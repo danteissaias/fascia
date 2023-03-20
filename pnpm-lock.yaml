@@ -2,19 +2,24 @@ lockfileVersion: 5.4
 
 specifiers:
   '@danteissaias/ds': ^0.0.37
+  '@swc-node/core': ^1.10.1
+  '@swc/core': ^1.3.41
   '@tanstack/react-table': ^8.7.9
   '@types/express': ^4.17.17
   '@types/node': ^18.15.3
   '@types/object-hash': ^3.0.2
   '@types/react': ^18.0.28
   '@types/react-dom': ^18.0.11
+  '@types/require-from-string': ^1.2.1
   '@vitejs/plugin-react-swc': ^3.2.0
   body-parser: ^1.20.2
   express: ^4.18.2
+  jiti: ^1.18.2
   object-hash: ^3.0.0
   react: ^18.2.0
   react-dom: ^18.2.0
   react-feather: ^2.0.10
+  require-from-string: ^2.0.2
   tsup: ^6.7.0
   tsx: ^3.12.5
   typescript: ^4.9.5
@@ -24,13 +29,18 @@ specifiers:
 
 dependencies:
   '@danteissaias/ds': 0.0.37_ctbzism2wka3iyjnku7h5qdyxi
+  '@swc-node/core': 1.10.1_@swc+core@1.3.41
+  '@swc/core': 1.3.41
   '@tanstack/react-table': 8.7.9_biqbaboplfbrettd7655fr4n2y
+  '@vitejs/plugin-react-swc': 3.2.0_vite@4.1.4
   body-parser: 1.20.2
   express: 4.18.2
+  jiti: 1.18.2
   object-hash: 3.0.0
   react: 18.2.0
   react-dom: 18.2.0_react@18.2.0
   react-feather: 2.0.10_react@18.2.0
+  require-from-string: 2.0.2
   vite: 4.1.4_@types+node@18.15.3
 
 devDependencies:
@@ -39,8 +49,8 @@ devDependencies:
   '@types/object-hash': 3.0.2
   '@types/react': 18.0.28
   '@types/react-dom': 18.0.11
-  '@vitejs/plugin-react-swc': 3.2.0_vite@4.1.4
-  tsup: 6.7.0_typescript@4.9.5
+  '@types/require-from-string': 1.2.1
+  tsup: 6.7.0_w2zjgg3mtz4gzyxcl35vjzbpcm
   tsx: 3.12.5
   typescript: 4.9.5
   vite-plugin-top-level-await: 1.3.0_vite@4.1.4
@@ -923,13 +933,21 @@ packages:
         optional: true
     dev: true
 
+  /@swc-node/core/1.10.1_@swc+core@1.3.41:
+    resolution: {integrity: sha512-4aiqLb5Uz+zDt7oIMAtH69+l1BvKV3k7fMYNNLjgdSM7qmFwrpHwu+Ss9nOYPTCFlbKCUMP/70aD5Gt2skmJaw==}
+    engines: {node: '>= 10'}
+    peerDependencies:
+      '@swc/core': '>= 1.3'
+    dependencies:
+      '@swc/core': 1.3.41
+    dev: false
+
   /@swc/core-darwin-arm64/1.3.41:
     resolution: {integrity: sha512-D4fybODToO/BvuP35bionDUrSuTVVr8eW+mApr1unOqb3mfiqOrVv0VP2fpWNRYiA+xMq+oBCB6KcGpL60HKWQ==}
     engines: {node: '>=10'}
     cpu: [arm64]
     os: [darwin]
     requiresBuild: true
-    dev: true
     optional: true
 
   /@swc/core-darwin-x64/1.3.41:
@@ -938,7 +956,6 @@ packages:
     cpu: [x64]
     os: [darwin]
     requiresBuild: true
-    dev: true
     optional: true
 
   /@swc/core-linux-arm-gnueabihf/1.3.41:
@@ -947,7 +964,6 @@ packages:
     cpu: [arm]
     os: [linux]
     requiresBuild: true
-    dev: true
     optional: true
 
   /@swc/core-linux-arm64-gnu/1.3.41:
@@ -956,7 +972,6 @@ packages:
     cpu: [arm64]
     os: [linux]
     requiresBuild: true
-    dev: true
     optional: true
 
   /@swc/core-linux-arm64-musl/1.3.41:
@@ -965,7 +980,6 @@ packages:
     cpu: [arm64]
     os: [linux]
     requiresBuild: true
-    dev: true
     optional: true
 
   /@swc/core-linux-x64-gnu/1.3.41:
@@ -974,7 +988,6 @@ packages:
     cpu: [x64]
     os: [linux]
     requiresBuild: true
-    dev: true
     optional: true
 
   /@swc/core-linux-x64-musl/1.3.41:
@@ -983,7 +996,6 @@ packages:
     cpu: [x64]
     os: [linux]
     requiresBuild: true
-    dev: true
     optional: true
 
   /@swc/core-win32-arm64-msvc/1.3.41:
@@ -992,7 +1004,6 @@ packages:
     cpu: [arm64]
     os: [win32]
     requiresBuild: true
-    dev: true
     optional: true
 
   /@swc/core-win32-ia32-msvc/1.3.41:
@@ -1001,7 +1012,6 @@ packages:
     cpu: [ia32]
     os: [win32]
     requiresBuild: true
-    dev: true
     optional: true
 
   /@swc/core-win32-x64-msvc/1.3.41:
@@ -1010,7 +1020,6 @@ packages:
     cpu: [x64]
     os: [win32]
     requiresBuild: true
-    dev: true
     optional: true
 
   /@swc/core/1.3.41:
@@ -1028,7 +1037,6 @@ packages:
       '@swc/core-win32-arm64-msvc': 1.3.41
       '@swc/core-win32-ia32-msvc': 1.3.41
       '@swc/core-win32-x64-msvc': 1.3.41
-    dev: true
 
   /@tanstack/react-table/8.7.9_biqbaboplfbrettd7655fr4n2y:
     resolution: {integrity: sha512-6MbbQn5AupSOkek1+6IYu+1yZNthAKTRZw9tW92Vi6++iRrD1GbI3lKTjJalf8lEEKOqapPzQPE20nywu0PjCA==}
@@ -1112,6 +1120,10 @@ packages:
       '@types/scheduler': 0.16.2
       csstype: 3.1.1
 
+  /@types/require-from-string/1.2.1:
+    resolution: {integrity: sha512-mIDK7lTHc0uW67SxPIqkwCrxmdKBV5aAET560hyZnT8c6Ekp9Aah3GPqe8Pl1Yzn/i2NMYmYv+HiMLwjGDCIAQ==}
+    dev: true
+
   /@types/scheduler/0.16.2:
     resolution: {integrity: sha512-hppQEBDmlwhFAXKJX2KnWLYu5yMfi91yazPb2l+lbJiwW+wdo1gNeRA+3RgNSO39WYX2euey41KEwnqesU2Jew==}
 
@@ -1129,7 +1141,7 @@ packages:
     dependencies:
       '@swc/core': 1.3.41
       vite: 4.1.4_@types+node@18.15.3
-    dev: true
+    dev: false
 
   /accepts/1.3.8:
     resolution: {integrity: sha512-PYAthTa2m2VKxuvSD3DPC/Gy+U+sOA1LAuT8mkmRuvw+NACSaeXEQ+NHcVF7rONl6qcaxV3Uuemwawk+7+SJLw==}
@@ -1715,6 +1727,11 @@ packages:
     resolution: {integrity: sha512-RHxMLp9lnKHGHRng9QFhRCMbYAcVpn69smSGcq3f36xjgVVWThj4qqLbTLlq7Ssj8B+fIQ1EuCEGI2lKsyQeIw==}
     dev: true
 
+  /jiti/1.18.2:
+    resolution: {integrity: sha512-QAdOptna2NYiSSpv0O/BwoHBSmz4YhpzJHyi+fnMRTXFjp7B8i/YG5Z8IfusxB1ufjcD2Sre1F3R+nX3fvy7gg==}
+    hasBin: true
+    dev: false
+
   /joycon/3.1.1:
     resolution: {integrity: sha512-34wB/Y7MW7bzjKRjUKTa46I2Z7eV62Rkhva+KkopW7Qvv/OSWBqvkSY7vusOPrNuZcUG3tApvdVgNB8POj3SPw==}
     engines: {node: '>=10'}
@@ -2098,6 +2115,11 @@ packages:
     resolution: {integrity: sha512-kY1AZVr2Ra+t+piVaJ4gxaFaReZVH40AKNo7UCX6W+dEwBo/2oZJzqfuN1qLq1oL45o56cPaTXELwrTh8Fpggg==}
     dev: false
 
+  /require-from-string/2.0.2:
+    resolution: {integrity: sha512-Xf0nWe6RseziFMu+Ap9biiUbmplq6S9/p+7w7YXP/JBHhrUDDUhwa+vANyubuqfZWTveU//DYVGsDG7RKL/vEw==}
+    engines: {node: '>=0.10.0'}
+    dev: false
+
   /resolve-from/5.0.0:
     resolution: {integrity: sha512-qYg9KP24dD5qka9J47d0aVky0N+b4fTU89LN9iDnjB5waksiC49rvMB0PrUJQGoTmH50XPiqOvAjDfaijGxYZw==}
     engines: {node: '>=8'}
@@ -2326,7 +2348,7 @@ packages:
     resolution: {integrity: sha512-336iVw3rtn2BUK7ORdIAHTyxHGRIHVReokCR3XjbckJMK7ms8FysBfhLR8IXnAgy7T0PTPNBWKiH514FOW/WSg==}
     dev: false
 
-  /tsup/6.7.0_typescript@4.9.5:
+  /tsup/6.7.0_w2zjgg3mtz4gzyxcl35vjzbpcm:
     resolution: {integrity: sha512-L3o8hGkaHnu5TdJns+mCqFsDBo83bJ44rlK7e6VdanIvpea4ArPcU3swWGsLVbXak1PqQx/V+SSmFPujBK+zEQ==}
     engines: {node: '>=14.18'}
     hasBin: true
@@ -2342,6 +2364,7 @@ packages:
       typescript:
         optional: true
     dependencies:
+      '@swc/core': 1.3.41
       bundle-require: 4.0.1_esbuild@0.17.12
       cac: 6.7.14
       chokidar: 3.5.3

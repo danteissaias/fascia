@@ -1,8 +1,10 @@
 import { ColumnDef } from '@tanstack/react-table';
+import { toast } from '@danteissaias/ds';
 
 export type HeaderAction<T> = (props: {
   documents: T[];
   removeDocuments: () => Promise<void>;
+  toast: typeof toast;
 }) => {
   label: string;
   onHandle: () => void | Promise<void>;
@@ -13,6 +15,7 @@ export type HeaderAction<T> = (props: {
 export type DocumentAction<T> = (props: {
   document: T;
   removeDocument: () => Promise<void>;
+  toast: typeof toast;
 }) => {
   label: string;
   onHandle: () => void | Promise<void>;

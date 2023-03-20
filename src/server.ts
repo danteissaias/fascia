@@ -2,7 +2,12 @@ import bodyParser from 'body-parser';
 import express from 'express';
 import * as path from 'path';
 import { createServer as createViteServer } from 'vite';
+import jiti from 'jiti';
+import { transformSync } from '@swc-node/core';
 import { Config } from './config';
+import { transformFile } from '@swc/core';
+import requireFromString from 'require-from-string';
+import react from '@vitejs/plugin-react-swc';
 
 export interface ServerOptions {
   isProd?: boolean;
@@ -23,8 +28,12 @@ function getConfigPath() {
 }
 
 async function getConfig(configPath: string): Promise<Config> {
-  const config = await require(configPath);
-  return config.default;
+  const { code } = await transformFile(configPath, {
+    jsc: { target: 'es2020', parser: { syntax: 'typescript', tsx: true } },
+    module: { type: 'commonjs' },
+  });
+
+  return requireFromString(code).default;
 }
 
 export async function createServer({
@@ -47,9 +56,11 @@ export async function createServer({
   const rootDir = path.resolve(__dirname, isProd ? '../dist/app' : '../');
 
   const vite = await createViteServer({
+    plugins: [react()],
     server: { middlewareMode: true },
     logLevel: 'error',
     root: rootDir,
+    define: { getConfig: '() => import("@/config").then((m) => m.default)' },
     resolve: { alias: { '@/config': configPath } },
   });
 

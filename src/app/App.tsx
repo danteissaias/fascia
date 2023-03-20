@@ -107,15 +107,21 @@ function ModelView<T>({ modelName, schema }: ModelViewProps<T>) {
         getRowId={getRowId}
         headerActions={(documents) =>
           [batchDelete].map((action) =>
-            action({ documents, removeDocuments: removeDocuments(documents) })
+            action({
+              documents,
+              removeDocuments: removeDocuments(documents),
+              toast,
+            })
           )
         }
         rowActions={(document) =>
-          schema.rowActions
-            .concat([deleteAction])
-            .map((action) =>
-              action({ document, removeDocument: removeDocument(document) })
-            )
+          schema.rowActions.concat([deleteAction]).map((action) =>
+            action({
+              document,
+              removeDocument: removeDocument(document),
+              toast,
+            })
+          )
         }
       >
         <IconButton
