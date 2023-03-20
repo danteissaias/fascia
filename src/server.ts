@@ -9,7 +9,7 @@ export interface ServerOptions {
   isProd?: boolean;
 }
 
-const PRISMA_MODULE = 'node_modules/prisma/prisma-client/index.js';
+const PRISMA_MODULE = 'node_modules/@prisma/client/index.js';
 
 async function getPrismaClient() {
   const cwd = process.cwd();
