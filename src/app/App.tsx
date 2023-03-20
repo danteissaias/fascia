@@ -1,7 +1,7 @@
 import './app.css';
+
 import {
   Button,
-  Checkbox,
   DataTable,
   IconButton,
   Stack,
@@ -11,7 +11,7 @@ import {
 import objectHash from 'object-hash';
 import { useEffect, useState } from 'react';
 import { RotateCw, Trash } from 'react-feather';
-import { Buffer } from 'buffer';
+
 import type { Config, DocumentAction, HeaderAction, Schema } from '../config';
 
 interface AppProps {
@@ -85,13 +85,30 @@ function ModelView<T>({ modelName, schema }: ModelViewProps<T>) {
   };
 
   const removeDocuments = (documents: T[]) => async () => {
-    console.log(documents);
     setRemovedIds((ids) => [...ids, ...documents.map(getRowId)]);
 
     rpc(modelName, 'deleteMany', {
       where: { OR: [...documents.map(schema.where)] },
     }).then((res) => console.log(res));
   };
+
+  const headerActions = (documents: T[]) =>
+    [batchDelete].map((action) =>
+      action({
+        documents,
+        removeDocuments: removeDocuments(documents),
+        toast,
+      })
+    );
+
+  const rowActions = (document: T) =>
+    schema.rowActions.concat([deleteAction]).map((action) =>
+      action({
+        document,
+        removeDocument: removeDocument(document),
+        toast,
+      })
+    );
 
   return (
     <Stack gap="12" style={{ maxWidth: 1000, width: '100%' }}>
@@ -105,24 +122,8 @@ function ModelView<T>({ modelName, schema }: ModelViewProps<T>) {
         columns={schema.columns}
         data={data.filter((d) => !removedIds.includes(getRowId(d)))}
         getRowId={getRowId}
-        headerActions={(documents) =>
-          [batchDelete].map((action) =>
-            action({
-              documents,
-              removeDocuments: removeDocuments(documents),
-              toast,
-            })
-          )
-        }
-        rowActions={(document) =>
-          schema.rowActions.concat([deleteAction]).map((action) =>
-            action({
-              document,
-              removeDocument: removeDocument(document),
-              toast,
-            })
-          )
-        }
+        headerActions={headerActions}
+        rowActions={rowActions}
       >
         <IconButton
           size="1"

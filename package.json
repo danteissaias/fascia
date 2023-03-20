@@ -32,13 +32,11 @@
   },
   "dependencies": {
     "@danteissaias/ds": "^0.0.37",
-    "@swc-node/core": "^1.10.1",
     "@swc/core": "^1.3.41",
     "@tanstack/react-table": "^8.7.9",
     "@vitejs/plugin-react-swc": "^3.2.0",
     "body-parser": "^1.20.2",
     "express": "^4.18.2",
-    "jiti": "^1.18.2",
     "object-hash": "^3.0.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",

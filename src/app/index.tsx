@@ -1,7 +1,7 @@
 import '@danteissaias/ds/index.css';
 
 import { Toaster } from '@danteissaias/ds';
-import * as React from 'react';
+import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 
 import App from './App';
@@ -19,8 +19,8 @@ declare global {
 const config = await window.getConfig();
 
 createRoot(root).render(
-  <React.StrictMode>
+  <StrictMode>
     <App config={config} />
     <Toaster />
-  </React.StrictMode>
+  </StrictMode>
 );
