@@ -56,7 +56,8 @@ export async function createServer({
   const rootDir = path.resolve(__dirname, isProd ? '../dist/app' : '../');
 
   const vite = await createViteServer({
-    plugins: [react()],
+    // We need react plugin for config in prod
+    plugins: isProd ? [react()] : [],
     server: { middlewareMode: true },
     logLevel: 'error',
     root: rootDir,
