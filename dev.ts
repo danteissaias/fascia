@@ -1,4 +1,4 @@
-import { createServer } from './server';
+import { createServer } from './src/server';
 
 createServer({}).then((server) => {
   server.listen(5555, () =>

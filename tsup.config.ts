@@ -1,8 +1,12 @@
 import { defineConfig } from 'tsup';
 
 export default defineConfig({
-  clean: false,
-  minify: true,
+  entry: ['src/index.ts', 'src/server.ts'],
   dts: true,
+  splitting: false,
+  minify: true,
+  // Must be run before vite
+  clean: true,
+  treeshake: true,
   format: ['esm', 'cjs'],
 });

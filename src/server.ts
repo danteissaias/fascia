@@ -1,11 +1,9 @@
-import { DMMF } from '@prisma/generator-helper';
-import prismaInternals from '@prisma/internals';
 import rootPath from 'app-root-path';
 import bodyParser from 'body-parser';
 import express from 'express';
 import * as path from 'path';
 import { createServer as createViteServer } from 'vite';
-import { getConfigPath, loadConfig } from '../config';
+import { getConfigPath, loadConfig } from './config';
 
 export interface ServerOptions {
   isProd?: boolean;
@@ -14,44 +12,17 @@ export interface ServerOptions {
 async function getPrismaClient() {
   const cwd = process.cwd();
   const prismaPath = path.resolve(cwd, './node_modules/@prisma/client');
-  return await import(prismaPath);
-}
-
-const { PrismaClient, Prisma } = await getPrismaClient();
-
-interface UniqueId {
-  name: string;
-  fields: DMMF.Field[];
-}
-
-// TODO: Support compound keys
-function getUniqueId(model: DMMF.Model) {
-  const idField = model.fields.find((f) => f.isId);
-  if (!idField) throw new Error(`No unique id found for model "${model.name}"`);
-  return { name: idField.name, fields: [idField] };
-}
-
-function whereId(uniqueId: UniqueId, document: Record<string, any>) {
-  const s = uniqueId.name;
-  const i = uniqueId.fields.reduce<Record<string, any>>(
-    (t, s) => ((t[s.name] = document[s.name]), t),
-    {}
-  );
-  return 1 === uniqueId.fields.length ? i : { [s]: i };
+  return await import(/* @vite-ignore */ prismaPath);
 }
 
 export async function createServer({
   isProd = process.env.NODE_ENV === 'production',
 }: ServerOptions) {
+  const { PrismaClient } = await getPrismaClient();
+
   const app = express();
   const config = await loadConfig();
   const prisma = new PrismaClient();
-  const datamodelPath = path.resolve(process.cwd(), './prisma/schema.prisma');
-  const dmmf = await prismaInternals.getDMMF({ datamodelPath });
-
-  const User = dmmf.datamodel.models[0];
-  const users = await prisma.user.findMany();
-  const where = whereId(getUniqueId(User), users[0]);
 
   const keys = Object.keys(config.schemas);
   for (const key of keys) {
