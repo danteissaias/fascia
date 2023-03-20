@@ -1,42 +1,14 @@
-import { transform } from '@swc-node/core';
 import bodyParser from 'body-parser';
 import express from 'express';
 import * as fs from 'fs';
 import * as path from 'path';
 import { fileURLToPath, pathToFileURL } from 'url';
 import { createServer as createViteServer } from 'vite';
-
-function getConfigPath() {
-  return path.resolve(process.cwd(), 'dash.config.tsx');
-}
-
-const dynamicImport = (mod: string) =>
-  import(/* @vite-ignore */ mod).then((mod) => mod.default);
-
-async function loadConfig() {
-  const configPath = getConfigPath();
-  const rawConfig = fs.readFileSync(configPath, 'utf-8');
-  const { code } = await transform(rawConfig, configPath, {
-    target: 'es2020',
-    module: 'es6',
-  });
-  const fileBase = `dash.config.timestamp-${Date.now()}`;
-  const fileNameTmp = `${fileBase}.mjs`;
-  const fileUrl = `${pathToFileURL(fileBase)}.mjs`;
-  fs.writeFileSync(fileNameTmp, code);
-  try {
-    return await dynamicImport(fileUrl);
-  } finally {
-    try {
-      fs.unlinkSync(fileNameTmp);
-    } catch {
-      // already removed if this function is called twice simultaneously
-    }
-  }
-}
+import { Config } from './config';
 
 export interface ServerOptions {
   isProd?: boolean;
+  configPath?: string;
 }
 
 const PRISMA_MODULE = 'node_modules/@prisma/client/index.js';
@@ -47,14 +19,25 @@ async function getPrismaClient() {
   return await import(/* @vite-ignore */ prismaPath);
 }
 
+function getConfigPath() {
+  const cwd = process.cwd();
+  return path.resolve(cwd, 'dash.config.tsx');
+}
+
+async function getConfig(configPath: string): Promise<Config> {
+  const config = await require(configPath);
+  return config.default;
+}
+
 export async function createServer({
   isProd = process.env.NODE_ENV === 'production',
+  configPath = getConfigPath(),
 }: ServerOptions) {
   const { PrismaClient } = await getPrismaClient();
 
   const app = express();
 
-  const config = await loadConfig();
+  const config = await getConfig(configPath);
   const prisma = new PrismaClient();
 
   const keys = Object.keys(config.schemas);
@@ -63,18 +46,13 @@ export async function createServer({
     throw new Error(`Model "${key}" not found in Prisma Client`);
   }
 
-  const rootDir = path.resolve(
-    fileURLToPath(import.meta.url),
-    isProd ? '../../dist/app' : '../'
-  );
-
-  console.log({ rootDir });
+  const rootDir = path.resolve(__dirname, isProd ? '../dist/app' : '../');
 
   const vite = await createViteServer({
     server: { middlewareMode: true },
     logLevel: 'error',
     root: rootDir,
-    define: { configPath: `"${getConfigPath()}"` },
+    define: { configPath: `"${configPath}"` },
   });
 
   app.use(bodyParser.json());

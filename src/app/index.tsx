@@ -15,9 +15,7 @@ declare global {
   }
 }
 
-const dynamicImport = (mod: string) =>
-  import(/* @vite-ignore */ mod).then((mod) => mod.default);
-const config = await dynamicImport(window.configPath);
+const config = await import(window.configPath).then((mod) => mod.default);
 
 createRoot(root).render(
   <React.StrictMode>
