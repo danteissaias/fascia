@@ -17,9 +17,15 @@ export interface ServerOptions {
 const PRISMA_MODULE = 'node_modules/@prisma/client/index.js';
 
 async function getPrismaClient() {
-  const cwd = process.cwd();
-  const prismaPath = path.resolve(cwd, PRISMA_MODULE);
-  return await import(/* @vite-ignore */ prismaPath);
+  try {
+    const cwd = process.cwd();
+    const prismaPath = path.resolve(cwd, PRISMA_MODULE);
+    return await import(/* @vite-ignore */ prismaPath);
+  } catch (error) {
+    throw new Error(
+      "Unable to import Prisma Client. Did you forget to run 'prisma generate'?"
+    );
+  }
 }
 
 function getConfigPath() {
