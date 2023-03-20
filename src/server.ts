@@ -64,7 +64,8 @@ export async function createServer({
     throw new Error(`Model "${key}" not found in Prisma Client`);
   }
 
-  const rootDir = rootPath.resolve(isProd ? 'dist/app' : '');
+  const distApp = path.resolve(import.meta.url, 'dist/app');
+  const rootDir = rootPath.resolve(isProd ? distApp : '');
 
   const vite = await createViteServer({
     server: { middlewareMode: true },
