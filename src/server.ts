@@ -63,10 +63,7 @@ export async function createServer({
     throw new Error(`Model "${key}" not found in Prisma Client`);
   }
 
-  const rootDir = path.resolve(
-    import.meta.url,
-    isProd ? '../../dist/app' : '../'
-  );
+  const rootDir = path.join(import.meta.url, isProd ? '../../dist/app' : '../');
 
   console.log({ rootDir });
 
