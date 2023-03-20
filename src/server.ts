@@ -65,6 +65,7 @@ export async function createServer({
   }
 
   const rootDir = rootPath.resolve(isProd ? 'app' : '');
+  console.log({ rootDir, rootPath: rootPath.toString() });
 
   const vite = await createViteServer({
     server: { middlewareMode: true },
