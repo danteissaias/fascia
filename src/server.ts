@@ -3,7 +3,7 @@ import bodyParser from 'body-parser';
 import express from 'express';
 import * as fs from 'fs';
 import * as path from 'path';
-import { pathToFileURL } from 'url';
+import { fileURLToPath, pathToFileURL } from 'url';
 import { createServer as createViteServer } from 'vite';
 
 function getConfigPath() {
@@ -63,7 +63,10 @@ export async function createServer({
     throw new Error(`Model "${key}" not found in Prisma Client`);
   }
 
-  const rootDir = path.join(import.meta.url, isProd ? '../../dist/app' : '../');
+  const rootDir = path.resolve(
+    fileURLToPath(import.meta.url),
+    isProd ? '../../dist/app' : '../'
+  );
 
   console.log({ rootDir });
 
