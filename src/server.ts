@@ -2,6 +2,7 @@ import rootPath from 'app-root-path';
 import bodyParser from 'body-parser';
 import express from 'express';
 import * as path from 'path';
+import { pathToFileURL } from 'url';
 import { createServer as createViteServer } from 'vite';
 import { getConfigPath, loadConfig } from './config';
 
@@ -12,7 +13,8 @@ export interface ServerOptions {
 async function getPrismaClient() {
   const cwd = process.cwd();
   const prismaPath = path.resolve(cwd, './node_modules/@prisma/client');
-  return await import(/* @vite-ignore */ prismaPath);
+  const fileUrl = pathToFileURL(prismaPath).href;
+  return await import(/* @vite-ignore */ fileUrl);
 }
 
 export async function createServer({

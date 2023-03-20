@@ -1,6 +1,6 @@
 {
   "name": "@danteissaias/dash",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "license": "MIT",
   "type": "module",
   "files": [
@@ -27,7 +27,7 @@
     }
   },
   "scripts": {
-    "dev": "cd dev && ts-node ../dev.ts",
+    "dev": "cd dev && tsx ../dev.ts",
     "build": "tsup && vite build --outDir ./dist/app",
     "prepublishOnly": "npm run build"
   },
