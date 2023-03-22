@@ -6,31 +6,31 @@ export type HeaderAction<T> = (props: {
   removeDocuments: () => Promise<void>;
   toast: typeof toast;
 }) => {
-  label: string;
+  text: string;
   onHandle: () => void | Promise<void>;
-  type?: 'default' | 'danger' | 'success';
-  icon?: React.ElementType;
+  type?: 'default' | 'danger';
 };
 
-export type DocumentAction<T> = (props: {
+export type RowAction<T> = (props: {
   document: T;
   removeDocument: () => Promise<void>;
   toast: typeof toast;
 }) => {
-  label: string;
-  onHandle: () => void | Promise<void>;
+  name: string;
+  onAction: () => void | Promise<void>;
   type?: 'default' | 'danger';
-  icon?: React.ElementType;
 };
 
-export function defineAction<T>(action: DocumentAction<T>): DocumentAction<T> {
+export function defineRowAction<T>(action: RowAction<T>): RowAction<T> {
   return action;
 }
 
 export interface Schema<T> {
-  // TODO: Infer this from the model
+  // TODO: Infer these from the model
+  include?: Record<string, boolean>;
   where: (document: T) => Record<string, any>;
-  rowActions: DocumentAction<T>[];
+
+  rowActions?: RowAction<T>[] | ((document: T) => RowAction<T>[]);
   columns: ColumnDef<T, any>[];
 }
 

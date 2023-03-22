@@ -1,18 +1,11 @@
 import './app.css';
 
-import {
-  Button,
-  DataTable,
-  IconButton,
-  Stack,
-  Text,
-  toast,
-} from '@danteissaias/ds';
+import { Button, Stack, Text, toast } from '@danteissaias/ds';
 import objectHash from 'object-hash';
 import { useEffect, useState } from 'react';
-import { RotateCw, Trash } from 'react-feather';
 
-import type { Config, DocumentAction, HeaderAction, Schema } from '../config';
+import type { Config, Schema } from '../config';
+import { Action, Actions, ActionSeperator, DataView } from './components';
 
 interface AppProps {
   config: Config;
@@ -20,37 +13,13 @@ interface AppProps {
 
 export default function App({ config }: AppProps) {
   return (
-    <Stack align="center" mx="24" mt="40">
+    <Stack align="center" mx="24" mt="40" gap="56">
       {Object.entries(config.schemas).map(([key, schema], i) => (
         <ModelView key={key} modelName={key} schema={schema} />
       ))}
     </Stack>
   );
 }
-
-const deleteAction: DocumentAction<any> = ({ document, removeDocument }) => ({
-  label: 'Delete record',
-  icon: Trash,
-  type: 'danger',
-  onHandle: async () => {
-    await removeDocument();
-    toast.success(`Deleted record ${document.id}`);
-  },
-});
-
-const batchDelete: HeaderAction<any> = ({ documents, removeDocuments }) => ({
-  label:
-    documents.length == 1
-      ? `Delete 1 record`
-      : `Delete ${documents.length} records`,
-  type: 'danger',
-  // Internal
-  clearSelection: true,
-  onHandle: async () => {
-    await removeDocuments();
-    toast.success(`Deleted ${documents.length} records`);
-  },
-});
 
 const rpc = async (modelName: string, operation: string, args: any) => {
   return await fetch('/rpc', {
@@ -73,7 +42,8 @@ function ModelView<T>({ modelName, schema }: ModelViewProps<T>) {
   const getRowId = (row: T) => objectHash(schema.where(row));
 
   useEffect(() => {
-    rpc(modelName, 'findMany', {}).then((data) => setData(data));
+    const { include } = schema;
+    rpc(modelName, 'findMany', { include }).then((data) => setData(data));
   }, [refetch]);
 
   const removeDocument = (document: T) => async () => {
@@ -92,17 +62,13 @@ function ModelView<T>({ modelName, schema }: ModelViewProps<T>) {
     }).then((res) => console.log(res));
   };
 
-  const headerActions = (documents: T[]) =>
-    [batchDelete].map((action) =>
-      action({
-        documents,
-        removeDocuments: removeDocuments(documents),
-        toast,
-      })
-    );
-
   const rowActions = (document: T) =>
-    schema.rowActions.concat([deleteAction]).map((action) =>
+    (schema.rowActions
+      ? typeof schema.rowActions === 'function'
+        ? schema.rowActions(document)
+        : schema.rowActions
+      : []
+    ).map((action) =>
       action({
         document,
         removeDocument: removeDocument(document),
@@ -112,30 +78,57 @@ function ModelView<T>({ modelName, schema }: ModelViewProps<T>) {
 
   return (
     <Stack gap="12" style={{ maxWidth: 1000, width: '100%' }}>
-      <Text size="20" mb="12">
-        {modelName}
-      </Text>
+      <Stack direction="row" justify="between">
+        <Text size="20" mb="12">
+          {modelName}
+        </Text>
 
-      <DataTable
-        fixed
-        enableRowSelection
+        <Button size="1">Add record</Button>
+      </Stack>
+
+      <DataView
         columns={schema.columns}
         data={data.filter((d) => !removedIds.includes(getRowId(d)))}
         getRowId={getRowId}
-        headerActions={headerActions}
-        rowActions={rowActions}
-      >
-        <IconButton
-          size="1"
-          onClick={() => {
-            setData([]);
-            setRefetch((r) => r + 1);
-          }}
-        >
-          <RotateCw />
-        </IconButton>
-        <Button size="1">Add record</Button>
-      </DataTable>
+        headerActions={({ rows, table, count }) => (
+          <Actions>
+            <Action
+              type="danger"
+              disabled={count < 1}
+              onAction={async () => {
+                table.resetRowSelection();
+                await removeDocuments(rows)();
+                toast.success(`Deleted ${count} records`);
+              }}
+            >
+              Delete records ({count})
+            </Action>
+          </Actions>
+        )}
+        rowActions={(row) => {
+          const actions = rowActions(row);
+
+          return (
+            <Actions>
+              {actions.map(({ name, ...action }) => (
+                <Action {...action}>{name}</Action>
+              ))}
+
+              {actions.length > 0 ? <ActionSeperator /> : null}
+
+              <Action
+                type="danger"
+                onAction={async () => {
+                  await removeDocument(row)();
+                  toast.success(`Deleted row`);
+                }}
+              >
+                Delete record
+              </Action>
+            </Actions>
+          );
+        }}
+      />
     </Stack>
   );
 }

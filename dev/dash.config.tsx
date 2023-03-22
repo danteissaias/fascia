@@ -1,12 +1,11 @@
 import { Badge, toast } from '@danteissaias/ds';
 import { User } from '@prisma/client';
 import { Mail, ShoppingCart } from 'react-feather';
-import { defineAction, defineConfig } from '../src';
+import { defineRowAction, defineConfig } from '../src';
 
-const forgotPassword = defineAction<User>(({ document }) => ({
-  label: 'Send password recovery',
-  icon: Mail,
-  onHandle: async () => {
+const forgotPassword = defineRowAction<User>(({ document }) => ({
+  name: 'Send password recovery',
+  onAction: async () => {
     // await fetch('/api/forgot-password', {
     //   method: 'POST',
     //   body: JSON.stringify({ email: document.email }),
@@ -15,10 +14,9 @@ const forgotPassword = defineAction<User>(({ document }) => ({
   },
 }));
 
-const paymentHistory = defineAction<User>(({ document }) => ({
-  label: 'View payment history',
-  icon: ShoppingCart,
-  onHandle: async () => {
+const paymentHistory = defineRowAction<User>(({ document }) => ({
+  name: 'View payment history',
+  onAction: async () => {
     // const href =
     //   'https://dashboard.stripe.com/customers/' + document.customerId;
     window.open('https://example.com');
