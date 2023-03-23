@@ -1,6 +1,6 @@
 import './app.css';
 
-import { Button, Stack, Text, toast } from '@danteissaias/ds';
+import { Button, Code, ScrollArea, Stack, Text, toast } from '@danteissaias/ds';
 import objectHash from 'object-hash';
 import { useEffect, useState } from 'react';
 
@@ -97,10 +97,30 @@ function ModelView<T>({ modelName, schema }: ModelViewProps<T>) {
               disabled={count < 1}
               confirm={{
                 title: 'Are you sure?',
-                description: `You are about to delete ${count} record${
-                  count > 1 ? 's' : ''
-                }. This action cannot be undone.`,
-                action: { text: 'Delete records', type: 'danger' },
+                description: (
+                  <>
+                    You are about to delete the following{' '}
+                    {count > 1 ? `${count} records` : 'record'}. This action
+                    cannot be undone.
+                    <ScrollArea
+                      style={{
+                        maxHeight: 200,
+                        display: 'flex',
+                        flexDirection: 'column',
+                        marginTop: 'var(--sp-12)',
+                        borderRadius: 'var(--br-4)',
+                      }}
+                    >
+                      <Code pre highlighted>
+                        {JSON.stringify(rows, null, 2)}
+                      </Code>
+                    </ScrollArea>
+                  </>
+                ),
+                action: {
+                  text: count > 1 ? `Delete ${count} records` : 'Delete record',
+                  type: 'danger',
+                },
               }}
               onAction={async () => {
                 table.resetRowSelection();
@@ -129,9 +149,26 @@ function ModelView<T>({ modelName, schema }: ModelViewProps<T>) {
                 type="danger"
                 confirm={{
                   title: 'Are you sure?',
-                  description:
-                    'You are about to delete 1 record. This action cannot be undone.',
-                  action: { text: 'Delete records', type: 'danger' },
+                  description: (
+                    <>
+                      You are about to delete the following record. This action
+                      cannot be undone.
+                      <ScrollArea
+                        style={{
+                          maxHeight: 200,
+                          display: 'flex',
+                          flexDirection: 'column',
+                          marginTop: 'var(--sp-12)',
+                          borderRadius: 'var(--br-4)',
+                        }}
+                      >
+                        <Code pre highlighted>
+                          {JSON.stringify(row, null, 2)}
+                        </Code>
+                      </ScrollArea>
+                    </>
+                  ),
+                  action: { text: 'Delete record', type: 'danger' },
                 }}
                 onAction={async () => {
                   await removeDocument(row)();

@@ -1,7 +1,6 @@
 import { Badge, toast } from '@danteissaias/ds';
 import { User } from '@prisma/client';
-import { Mail, ShoppingCart } from 'react-feather';
-import { defineRowAction, defineConfig } from '../src';
+import { defineConfig, defineRowAction } from '../src';
 
 const forgotPassword = defineRowAction<User>(({ document }) => ({
   name: 'Send password recovery',

@@ -2,8 +2,8 @@ lockfileVersion: '6.0'
 
 dependencies:
   '@danteissaias/ds':
-    specifier: ^0.0.43
-    version: 0.0.43(@types/react@18.0.28)(react-dom@18.2.0)(react-feather@2.0.10)(react@18.2.0)
+    specifier: ^0.0.47
+    version: 0.0.47(@types/react@18.0.28)(react-dom@18.2.0)(react-feather@2.0.10)(react@18.2.0)
   '@swc/core':
     specifier: ^1.3.41
     version: 1.3.41
@@ -85,8 +85,8 @@ packages:
       regenerator-runtime: 0.13.11
     dev: false
 
-  /@danteissaias/ds@0.0.43(@types/react@18.0.28)(react-dom@18.2.0)(react-feather@2.0.10)(react@18.2.0):
-    resolution: {integrity: sha512-JGYqka/O4NWmIWVmvGT8Nxa7y4Igqc98oDwLlrSKPVgqEFJwWJwBHBwS+AZZm4GCJmqDMWPdHCQRbMk4OmceNg==}
+  /@danteissaias/ds@0.0.47(@types/react@18.0.28)(react-dom@18.2.0)(react-feather@2.0.10)(react@18.2.0):
+    resolution: {integrity: sha512-Ep/F0bi7ERZh9Sf5UPAlN5j3Qfzfq5o56CBxB+7I1bkHg95bPc3RsgxEz98N4Ula5gt7zjzJhh4XjzaUKZ7K0g==}
     peerDependencies:
       react: ^18.2.0
       react-dom: ^18.2.0

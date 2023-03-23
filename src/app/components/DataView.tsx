@@ -39,7 +39,7 @@ export interface ActionProps
   onAction: () => void | Promise<void>;
   confirm?: {
     title: string;
-    description: string;
+    description: JSX.Element | string;
     action: {
       text: string;
       type?: 'default' | 'danger';
