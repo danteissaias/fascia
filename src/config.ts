@@ -19,6 +19,14 @@ export type RowAction<T> = (props: {
   name: string;
   onAction: () => void | Promise<void>;
   type?: 'default' | 'danger';
+  confirm?: {
+    title: string;
+    description: string;
+    action: {
+      text: string;
+      type?: 'default' | 'danger';
+    };
+  };
 };
 
 export function defineRowAction<T>(action: RowAction<T>): RowAction<T> {

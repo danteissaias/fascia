@@ -1,6 +1,15 @@
 import {
   Badge,
   Checkbox,
+  Confirm,
+  ConfirmAction,
+  ConfirmCancel,
+  ConfirmContent,
+  ConfirmDescription,
+  ConfirmFooter,
+  ConfirmHeader,
+  ConfirmTitle,
+  ConfirmTrigger,
   Menu,
   MenuContent,
   MenuIconButton,
@@ -22,17 +31,63 @@ import {
   Table as ReactTable,
   useReactTable,
 } from '@tanstack/react-table';
-import { useMemo, useState } from 'react';
+import { createContext, useContext, useMemo, useState } from 'react';
 import { MoreHorizontal } from 'react-feather';
 
 export interface ActionProps
   extends Pick<MenuItemProps, 'type' | 'disabled' | 'children'> {
   onAction: () => void | Promise<void>;
+  confirm?: {
+    title: string;
+    description: string;
+    action: {
+      text: string;
+      type?: 'default' | 'danger';
+    };
+  };
 }
 
-export const Action = ({ onAction, ...props }: ActionProps) => (
-  <MenuItem onSelect={onAction} {...props} />
-);
+interface ActionContext {
+  onConfirmOpenChange: (isOpen: boolean) => void;
+}
+
+const ActionContext = createContext<ActionContext>({
+  onConfirmOpenChange: () => {},
+});
+
+export const Action = ({ onAction, confirm, ...props }: ActionProps) => {
+  const [isOpen, setIsOpen] = useState(false);
+  const { onConfirmOpenChange } = useContext(ActionContext);
+
+  if (!confirm || props.disabled)
+    return <MenuItem onSelect={onAction} {...props} />;
+
+  return (
+    <Confirm
+      open={isOpen}
+      onOpenChange={(isOpen) => {
+        setIsOpen(isOpen);
+        onConfirmOpenChange(isOpen);
+      }}
+    >
+      <ConfirmTrigger asChild>
+        <MenuItem onSelect={(e) => e.preventDefault()} {...props} />
+      </ConfirmTrigger>
+      <ConfirmContent>
+        <ConfirmHeader>
+          <ConfirmTitle>{confirm.title}</ConfirmTitle>
+          <ConfirmDescription>{confirm.description}</ConfirmDescription>
+        </ConfirmHeader>
+        <ConfirmFooter>
+          <ConfirmCancel>Cancel</ConfirmCancel>
+          <ConfirmAction onClick={onAction} type={confirm.action.type}>
+            {confirm.action.text}
+          </ConfirmAction>
+        </ConfirmFooter>
+      </ConfirmContent>
+    </Confirm>
+  );
+};
 
 export const ActionSeperator = MenuSeparator;
 export const Actions = MenuItemGroup;
@@ -40,7 +95,7 @@ export const Actions = MenuItemGroup;
 export interface DataViewProps<T> {
   data: T[];
   columns: ColumnDef<T, any>[];
-  rowActions: (row: T) => JSX.Element;
+  rowActions: (data: { row: T; table: ReactTable<T> }) => JSX.Element;
   headerActions: (data: {
     rows: T[];
     count: number;
@@ -55,7 +110,6 @@ export function DataView<T>({
   headerActions,
   rowActions,
   getRowId,
-  ...props
 }: DataViewProps<T>) {
   const columns = useMemo(
     () => [
@@ -101,6 +155,8 @@ export function DataView<T>({
             .getSelectedRowModel()
             .flatRows.map((row) => row.original);
 
+          const [hideMenu, setHideMenu] = useState(false);
+
           return (
             <Stack align="center" direction="row">
               {rows.length > 0 ? (
@@ -130,14 +186,24 @@ export function DataView<T>({
                   <MoreHorizontal />
                 </MenuIconButton>
 
-                <MenuContent style={{ minWidth: 220 }}>
-                  {headerActions({ table, rows, count: rows.length })}
+                <MenuContent hidden={hideMenu} style={{ minWidth: 220 }}>
+                  <ActionContext.Provider
+                    value={{ onConfirmOpenChange: setHideMenu }}
+                  >
+                    {headerActions({
+                      table,
+                      rows,
+                      count: rows.length,
+                    })}
+                  </ActionContext.Provider>
                 </MenuContent>
               </Menu>
             </Stack>
           );
         },
         cell: ({ row }) => {
+          const [hideMenu, setHideMenu] = useState(false);
+
           return (
             <Menu>
               <MenuIconButton
@@ -148,8 +214,12 @@ export function DataView<T>({
                 <MoreHorizontal />
               </MenuIconButton>
 
-              <MenuContent style={{ minWidth: 220 }}>
-                {rowActions(row.original)}
+              <MenuContent hidden={hideMenu} style={{ minWidth: 220 }}>
+                <ActionContext.Provider
+                  value={{ onConfirmOpenChange: setHideMenu }}
+                >
+                  {rowActions({ row: row.original, table })}
+                </ActionContext.Provider>
               </MenuContent>
             </Menu>
           );

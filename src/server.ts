@@ -43,7 +43,7 @@ async function getConfig(configPath: string): Promise<Config> {
 export async function createServer({
   isProd = process.env.NODE_ENV === 'production',
   configPath = getConfigPath(),
-}: ServerOptions) {
+}: ServerOptions): Promise<ReturnType<typeof express>> {
   const { PrismaClient } = await getPrismaClient();
 
   const app = express();

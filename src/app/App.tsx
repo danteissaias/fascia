@@ -95,6 +95,13 @@ function ModelView<T>({ modelName, schema }: ModelViewProps<T>) {
             <Action
               type="danger"
               disabled={count < 1}
+              confirm={{
+                title: 'Are you sure?',
+                description: `You are about to delete ${count} record${
+                  count > 1 ? 's' : ''
+                }. This action cannot be undone.`,
+                action: { text: 'Delete records', type: 'danger' },
+              }}
               onAction={async () => {
                 table.resetRowSelection();
                 await removeDocuments(rows)();
@@ -105,19 +112,27 @@ function ModelView<T>({ modelName, schema }: ModelViewProps<T>) {
             </Action>
           </Actions>
         )}
-        rowActions={(row) => {
+        rowActions={({ row }) => {
           const actions = rowActions(row);
 
           return (
             <Actions>
-              {actions.map(({ name, ...action }) => (
-                <Action {...action}>{name}</Action>
+              {actions.map(({ name, ...action }, i) => (
+                <Action key={i} {...action}>
+                  {name}
+                </Action>
               ))}
 
               {actions.length > 0 ? <ActionSeperator /> : null}
 
               <Action
                 type="danger"
+                confirm={{
+                  title: 'Are you sure?',
+                  description:
+                    'You are about to delete 1 record. This action cannot be undone.',
+                  action: { text: 'Delete records', type: 'danger' },
+                }}
                 onAction={async () => {
                   await removeDocument(row)();
                   toast.success(`Deleted row`);
