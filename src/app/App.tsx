@@ -172,7 +172,7 @@ function ModelView<T>({ modelName, schema }: ModelViewProps<T>) {
                 }}
                 onAction={async () => {
                   await removeDocument(row)();
-                  toast.success(`Deleted row`);
+                  toast.success(`Deleted record`);
                 }}
               >
                 Delete record
