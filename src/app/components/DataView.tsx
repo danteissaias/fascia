@@ -35,14 +35,14 @@ import { createContext, useContext, useMemo, useState } from 'react';
 import { MoreHorizontal } from 'react-feather';
 
 export interface ActionProps
-  extends Pick<MenuItemProps, 'type' | 'disabled' | 'children'> {
+  extends Pick<MenuItemProps, 'disabled' | 'children' | 'danger'> {
   onAction: () => void | Promise<void>;
   confirm?: {
     title: string;
     description: JSX.Element | string;
     action: {
       text: string;
-      type?: 'default' | 'danger';
+      color?: 'gray' | 'green' | 'red';
     };
   };
 }
@@ -80,7 +80,7 @@ export const Action = ({ onAction, confirm, ...props }: ActionProps) => {
         </ConfirmHeader>
         <ConfirmFooter>
           <ConfirmCancel>Cancel</ConfirmCancel>
-          <ConfirmAction onClick={onAction} type={confirm.action.type}>
+          <ConfirmAction onClick={onAction} color={confirm.action.color}>
             {confirm.action.text}
           </ConfirmAction>
         </ConfirmFooter>
@@ -186,7 +186,11 @@ export function DataView<T>({
                   <MoreHorizontal />
                 </MenuIconButton>
 
-                <MenuContent hidden={hideMenu} style={{ minWidth: 220 }}>
+                <MenuContent
+                  align="end"
+                  hidden={hideMenu}
+                  style={{ minWidth: 220 }}
+                >
                   <ActionContext.Provider
                     value={{ onConfirmOpenChange: setHideMenu }}
                   >
@@ -214,7 +218,11 @@ export function DataView<T>({
                 <MoreHorizontal />
               </MenuIconButton>
 
-              <MenuContent hidden={hideMenu} style={{ minWidth: 220 }}>
+              <MenuContent
+                align="end"
+                hidden={hideMenu}
+                style={{ minWidth: 220 }}
+              >
                 <ActionContext.Provider
                   value={{ onConfirmOpenChange: setHideMenu }}
                 >
@@ -238,7 +246,7 @@ export function DataView<T>({
   });
 
   return (
-    <Table className="DataView">
+    <Table dense className="DataView">
       <TableHead>
         {table.getHeaderGroups().map((headerGroup) => (
           <TableRow key={headerGroup.id}>

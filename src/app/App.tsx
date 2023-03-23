@@ -79,7 +79,7 @@ function ModelView<T>({ modelName, schema }: ModelViewProps<T>) {
   return (
     <Stack gap="12" style={{ maxWidth: 1000, width: '100%' }}>
       <Stack direction="row" justify="between">
-        <Text size="20" mb="12">
+        <Text size="16" mb="12" weight="700">
           {modelName}
         </Text>
 
@@ -93,7 +93,7 @@ function ModelView<T>({ modelName, schema }: ModelViewProps<T>) {
         headerActions={({ rows, table, count }) => (
           <Actions>
             <Action
-              type="danger"
+              danger
               disabled={count < 1}
               confirm={{
                 title: 'Are you sure?',
@@ -119,7 +119,7 @@ function ModelView<T>({ modelName, schema }: ModelViewProps<T>) {
                 ),
                 action: {
                   text: count > 1 ? `Delete ${count} records` : 'Delete record',
-                  type: 'danger',
+                  color: 'red',
                 },
               }}
               onAction={async () => {
@@ -146,7 +146,7 @@ function ModelView<T>({ modelName, schema }: ModelViewProps<T>) {
               {actions.length > 0 ? <ActionSeperator /> : null}
 
               <Action
-                type="danger"
+                danger
                 confirm={{
                   title: 'Are you sure?',
                   description: (
@@ -168,7 +168,10 @@ function ModelView<T>({ modelName, schema }: ModelViewProps<T>) {
                       </ScrollArea>
                     </>
                   ),
-                  action: { text: 'Delete record', type: 'danger' },
+                  action: {
+                    text: 'Delete record',
+                    color: 'red',
+                  },
                 }}
                 onAction={async () => {
                   await removeDocument(row)();
