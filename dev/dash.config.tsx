@@ -38,5 +38,10 @@ export default defineConfig({
         },
       ],
     },
+
+    Organization: {
+      where: (document) => ({ id: document.id }),
+      columns: [{ accessorKey: 'name', header: 'Name' }],
+    },
   },
 });

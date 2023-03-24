@@ -8,12 +8,30 @@ const users = [
   { email: 'jane@doe.com', name: 'Jane Doe', type: 'customer' },
 ];
 
+const orgs = [
+  { name: 'Google' },
+  { name: 'Facebook' },
+  { name: 'Apple' },
+  { name: 'Microsoft' },
+  { name: 'Netflix' },
+  { name: 'Amazon' },
+  { name: 'Disney' },
+];
+
 async function main() {
   for (const user of users) {
     await prisma.user.upsert({
       where: { email: user.email },
       update: {},
       create: user,
+    });
+  }
+
+  for (const org of orgs) {
+    await prisma.organization.upsert({
+      where: { name: org.name },
+      update: {},
+      create: org,
     });
   }
 }

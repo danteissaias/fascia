@@ -12,12 +12,12 @@
 
 .DataView tbody td:first-of-type,
 .DataView tbody td:last-of-type {
-  background: var(--gray-2);
+  background: #1c1c1f;
 }
 
 .DataView thead td:first-of-type,
 .DataView thead td:last-of-type {
-  background: var(--gray-4);
+  background: #222226;
 }
 
 .DataView td:first-of-type,
