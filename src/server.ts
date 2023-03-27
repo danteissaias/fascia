@@ -69,11 +69,14 @@ export async function createServer({
     root: rootDir,
     base: basePath,
     mode: isProd ? 'production' : 'development',
-    define: { getConfig: '() => import("@/config").then((m) => m.default)' },
+    define: {
+      getConfig: '() => import("@/config").then((m) => m.default)',
+      basePath: `"${basePath}"`,
+    },
     resolve: { alias: { '@/config': configPath } },
     server: {
       middlewareMode: true,
-      fs: { allow: [searchForWorkspaceRoot(process.cwd()), configPath] },
+      fs: { allow: [configPath, rootDir] },
     },
   });
 

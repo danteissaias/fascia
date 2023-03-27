@@ -47,8 +47,19 @@ export default function App({ config }: AppProps) {
   );
 }
 
+declare global {
+  interface Window {
+    basePath: string;
+  }
+}
+
 const rpc = async (modelName: string, operation: string, args: any) => {
-  return await fetch('/rpc', {
+  const basePath = window.basePath.endsWith('/')
+    ? window.basePath.slice(0, -1)
+    : window.basePath;
+  const rpcPath = `${basePath}/rpc`;
+
+  return await fetch(rpcPath, {
     method: 'POST',
     body: JSON.stringify({ modelName, operation, args }),
     headers: { 'Content-Type': 'application/json' },
