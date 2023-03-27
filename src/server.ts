@@ -4,7 +4,7 @@ import bodyParser from 'body-parser';
 import express, { Router } from 'express';
 import * as path from 'path';
 import requireFromString from 'require-from-string';
-import { createServer as createViteServer } from 'vite';
+import { createServer as createViteServer, searchForWorkspaceRoot } from 'vite';
 import { Config } from './config';
 
 export interface ServerOptions {
@@ -65,13 +65,16 @@ export async function createServer({
   const vite = await createViteServer({
     // We need react plugin for config in prod
     plugins: isProd ? [react()] : [],
-    server: { middlewareMode: true },
     logLevel: 'error',
     root: rootDir,
     base: basePath,
     mode: isProd ? 'production' : 'development',
     define: { getConfig: '() => import("@/config").then((m) => m.default)' },
     resolve: { alias: { '@/config': configPath } },
+    server: {
+      middlewareMode: true,
+      fs: { allow: [searchForWorkspaceRoot(process.cwd()), configPath] },
+    },
   });
 
   router.use(bodyParser.json());
