@@ -46,7 +46,7 @@ async function getConfig(configPath: string): Promise<Config> {
 export async function createServer({
   isProd = process.env.NODE_ENV === 'production',
   configPath = getConfigPath(),
-  basePath = '/',
+  basePath = './',
 }: ServerOptions): Promise<ReturnType<typeof express>> {
   const { PrismaClient } = await getPrismaClient();
 
@@ -73,6 +73,8 @@ export async function createServer({
   if (isProd) {
     const root = path.resolve(dirname, '../../dist/app');
 
+    console.log({ root });
+
     await build({
       bundle: true,
       entryPoints: [configPath],
@@ -86,9 +88,13 @@ export async function createServer({
     router.use(compression());
     router.use(express.static(root));
   } else {
+    const root = path.resolve(dirname, '../../');
+
+    console.log({ root });
+
     const vite = await createViteServer({
-      root: path.resolve(dirname, '../../'),
-      base: './',
+      root,
+      base: basePath,
       server: { middlewareMode: true },
       resolve: { alias: { '/config.js': configPath } },
     });
