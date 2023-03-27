@@ -77,8 +77,8 @@ export async function createServer({
       format: 'esm',
     });
 
-    app.use(compression());
-    app.use(serveStatic(path.resolve(__dirname, '../dist/app')));
+    router.use(compression());
+    router.use(serveStatic(path.resolve(__dirname, '../dist/app')));
   } else {
     const vite = await createViteServer({
       // We need react plugin for config in prod
