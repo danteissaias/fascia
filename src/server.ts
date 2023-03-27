@@ -75,6 +75,8 @@ export async function createServer({
       bundle: true,
       entryPoints: [configPath],
       outfile: path.join(root, 'config.js'),
+      jsx: 'transform',
+      jsxImportSource: 'react',
       format: 'esm',
     });
 
