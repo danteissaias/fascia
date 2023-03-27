@@ -1,10 +1,12 @@
 import { transformFile } from '@swc/core';
-import react from '@vitejs/plugin-react-swc';
 import bodyParser from 'body-parser';
+import compression from 'compression';
+import { build } from 'esbuild';
 import express, { Router } from 'express';
 import * as path from 'path';
 import requireFromString from 'require-from-string';
-import { createServer as createViteServer, searchForWorkspaceRoot } from 'vite';
+import serveStatic from 'serve-static';
+import { createServer as createViteServer } from 'vite';
 import { Config } from './config';
 
 export interface ServerOptions {
@@ -60,26 +62,6 @@ export async function createServer({
     throw new Error(`Model "${key}" not found in Prisma Client`);
   }
 
-  const rootDir = path.resolve(__dirname, isProd ? '../dist/app' : '../');
-
-  const vite = await createViteServer({
-    // We need react plugin for config in prod
-    plugins: isProd ? [react()] : [],
-    logLevel: 'error',
-    root: rootDir,
-    base: basePath,
-    mode: isProd ? 'production' : 'development',
-    define: {
-      getConfig: '() => import("@/config").then((m) => m.default)',
-      basePath: `"${basePath}"`,
-    },
-    resolve: { alias: { '@/config': configPath } },
-    server: {
-      middlewareMode: true,
-      fs: { allow: [searchForWorkspaceRoot(process.cwd())] },
-    },
-  });
-
   router.use(bodyParser.json());
 
   router.post('/rpc', async (req, res) => {
@@ -87,7 +69,27 @@ export async function createServer({
     res.json(await prisma[modelName][operation](args));
   });
 
-  router.use(vite.middlewares);
+  if (isProd) {
+    await build({
+      bundle: true,
+      entryPoints: [configPath],
+      outfile: path.resolve(__dirname, '../dist/app/config.js'),
+      format: 'esm',
+    });
+
+    app.use(compression());
+    app.use(serveStatic(path.resolve(__dirname, '../dist/app')));
+  } else {
+    const vite = await createViteServer({
+      // We need react plugin for config in prod
+      root: path.resolve(__dirname, '../'),
+      base: basePath,
+      server: { middlewareMode: true },
+      resolve: { alias: { '/config.js': configPath } },
+    });
+
+    router.use(vite.middlewares);
+  }
 
   app.use(basePath, router);
 

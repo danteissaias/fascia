@@ -10,13 +10,14 @@ import type { Config } from '../config';
 const root = document.getElementById('root');
 if (!root) throw new Error('No root element found');
 
-declare global {
-  interface Window {
-    getConfig: () => Promise<Config>;
-  }
+async function getConfig(): Promise<Config> {
+  const configPath = '/config.js';
+  return import(/* @vite-ignore */ configPath).then((mod) => mod.default);
 }
 
-const config = await window.getConfig();
+const config = await getConfig();
+
+console.log(config);
 
 createRoot(root).render(
   <StrictMode>

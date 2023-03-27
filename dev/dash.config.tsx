@@ -1,5 +1,5 @@
 import { Badge, toast } from '@danteissaias/ds';
-import { User } from '@prisma/client';
+import type { User } from '@prisma/client';
 import { defineConfig, defineRowAction } from '../src';
 
 const forgotPassword = defineRowAction<User>(({ document }) => ({

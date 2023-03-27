@@ -54,12 +54,7 @@ declare global {
 }
 
 const rpc = async (modelName: string, operation: string, args: any) => {
-  const basePath = window.basePath.endsWith('/')
-    ? window.basePath.slice(0, -1)
-    : window.basePath;
-  const rpcPath = `${basePath}/rpc`;
-
-  return await fetch(rpcPath, {
+  return await fetch('./rpc', {
     method: 'POST',
     body: JSON.stringify({ modelName, operation, args }),
     headers: { 'Content-Type': 'application/json' },
