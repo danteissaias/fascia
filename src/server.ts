@@ -11,7 +11,6 @@ import { Config } from './config';
 
 export interface ServerOptions {
   isProd?: boolean;
-  isDist?: boolean;
   configPath?: string;
   basePath?: string;
 }
@@ -35,20 +34,20 @@ function getConfigPath() {
   return path.resolve(cwd, 'dash.config.tsx');
 }
 
-async function getConfig(configPath: string): Promise<Config> {
-  const { code } = await transformFile(configPath, {
+async function getConfig(configPath: string) {
+  const { code: configCode } = await transformFile(configPath, {
     jsc: { target: 'es2020', parser: { syntax: 'typescript', tsx: true } },
     module: { type: 'commonjs' },
   });
 
-  return requireFromString(code).default;
+  const config: Config = requireFromString(configCode).default;
+  return config;
 }
 
 export async function createServer({
   isProd = process.env.NODE_ENV === 'production',
-  isDist = true,
   configPath = getConfigPath(),
-  basePath = './',
+  basePath = '/',
 }: ServerOptions): Promise<ReturnType<typeof express>> {
   const { PrismaClient } = await getPrismaClient();
 
@@ -75,8 +74,6 @@ export async function createServer({
   if (isProd) {
     const root = path.resolve(dirname, '../../dist/app');
 
-    console.log({ root });
-
     await build({
       bundle: true,
       entryPoints: [configPath],
@@ -90,13 +87,10 @@ export async function createServer({
     router.use(compression());
     router.use(express.static(root));
   } else {
-    const root = path.resolve(dirname, isDist ? '../../dist/app' : '../../');
-
-    console.log({ root });
+    const root = path.resolve(dirname, '../../');
 
     const vite = await createViteServer({
       root,
-      base: basePath,
       server: { middlewareMode: true },
       resolve: { alias: { '/config.js': configPath } },
     });

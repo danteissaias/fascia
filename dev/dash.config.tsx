@@ -1,8 +1,7 @@
-import { Badge, toast } from '@danteissaias/ds';
 import type { User } from '@prisma/client';
-import { defineConfig, defineRowAction } from '../src';
+import { defineConfig, defineRowAction, Badge } from '../src';
 
-const forgotPassword = defineRowAction<User>(({ document }) => ({
+const forgotPassword = defineRowAction<User>(({ document, toast }) => ({
   name: 'Send password recovery',
   onAction: async () => {
     // await fetch('/api/forgot-password', {
