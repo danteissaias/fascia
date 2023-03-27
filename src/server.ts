@@ -75,9 +75,9 @@ export async function createServer({
       bundle: true,
       entryPoints: [configPath],
       outfile: path.join(root, 'config.js'),
-      jsx: 'transform',
-      jsxImportSource: 'react',
+      jsx: 'automatic',
       format: 'esm',
+      target: ['es2020', 'chrome90', 'firefox88', 'safari14', 'edge91'],
     });
 
     router.use(compression());
