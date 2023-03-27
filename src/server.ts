@@ -68,6 +68,7 @@ export async function createServer({
     server: { middlewareMode: true },
     logLevel: 'error',
     root: rootDir,
+    base: basePath,
     define: { getConfig: '() => import("@/config").then((m) => m.default)' },
     resolve: { alias: { '@/config': configPath } },
   });
