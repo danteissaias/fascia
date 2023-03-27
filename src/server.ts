@@ -76,6 +76,7 @@ export async function createServer({
 
     await build({
       bundle: true,
+      tsconfig: path.resolve(dirname, '../../tsconfig.json'),
       entryPoints: [configPath],
       outfile: path.join(root, 'config.js'),
       jsx: 'automatic',

@@ -1,11 +1,12 @@
 {
   "name": "@danteissaias/dash",
-  "version": "0.0.36",
+  "version": "0.0.37",
   "license": "MIT",
   "files": [
     "dist",
     "LICENSE",
-    "README.md"
+    "README.md",
+    "tsconfig.json"
   ],
   "publishConfig": {
     "access": "public"
