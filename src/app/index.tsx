@@ -11,7 +11,7 @@ const root = document.getElementById('root');
 if (!root) throw new Error('No root element found');
 
 async function getConfig(): Promise<Config> {
-  const configPath = '/config.js';
+  const configPath = './config.js';
   return import(/* @vite-ignore */ configPath).then((mod) => mod.default);
 }
 
