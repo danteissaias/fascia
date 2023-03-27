@@ -5,7 +5,6 @@ import { build } from 'esbuild';
 import express, { Router } from 'express';
 import * as path from 'path';
 import requireFromString from 'require-from-string';
-import serveStatic from 'serve-static';
 import { createServer as createViteServer } from 'vite';
 import { Config } from './config';
 
@@ -78,12 +77,12 @@ export async function createServer({
     });
 
     router.use(compression());
-    router.use(serveStatic(path.resolve(__dirname, '../dist/app')));
+    router.use(express.static(path.resolve(__dirname, '../dist/app')));
   } else {
     const vite = await createViteServer({
       // We need react plugin for config in prod
       root: path.resolve(__dirname, '../'),
-      base: basePath,
+      base: './',
       server: { middlewareMode: true },
       resolve: { alias: { '/config.js': configPath } },
     });
