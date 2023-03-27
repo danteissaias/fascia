@@ -80,7 +80,6 @@ export async function createServer({
     router.use(express.static(path.resolve(__dirname, '../dist/app')));
   } else {
     const vite = await createViteServer({
-      // We need react plugin for config in prod
       root: path.resolve(__dirname, '../'),
       base: './',
       server: { middlewareMode: true },
