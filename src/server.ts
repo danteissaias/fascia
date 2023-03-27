@@ -69,6 +69,7 @@ export async function createServer({
     logLevel: 'error',
     root: rootDir,
     base: basePath,
+    mode: isProd ? 'production' : 'development',
     define: { getConfig: '() => import("@/config").then((m) => m.default)' },
     resolve: { alias: { '@/config': configPath } },
   });
