@@ -69,15 +69,17 @@ export async function createServer({
   });
 
   if (isProd) {
+    const root = path.resolve(__dirname, '../dist/app');
+
     await build({
       bundle: true,
       entryPoints: [configPath],
-      outfile: path.resolve(__dirname, '../dist/app/config.js'),
+      outfile: path.join(root, 'config.js'),
       format: 'esm',
     });
 
     router.use(compression());
-    router.use(express.static(path.resolve(__dirname, '../dist/app')));
+    router.use(express.static(root, { redirect: false }));
   } else {
     const vite = await createViteServer({
       root: path.resolve(__dirname, '../'),
