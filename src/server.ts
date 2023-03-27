@@ -76,7 +76,7 @@ export async function createServer({
     resolve: { alias: { '@/config': configPath } },
     server: {
       middlewareMode: true,
-      fs: { allow: [configPath, rootDir] },
+      fs: { allow: [searchForWorkspaceRoot(process.cwd())] },
     },
   });
 
