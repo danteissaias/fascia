@@ -5,6 +5,7 @@ import { build } from 'esbuild';
 import express, { Router } from 'express';
 import * as path from 'path';
 import requireFromString from 'require-from-string';
+import { fileURLToPath } from 'url';
 import { createServer as createViteServer } from 'vite';
 import { Config } from './config';
 
@@ -54,6 +55,7 @@ export async function createServer({
 
   const config = await getConfig(configPath);
   const prisma = new PrismaClient();
+  const dirname = fileURLToPath(import.meta.url);
 
   const keys = Object.keys(config.schemas);
   for (const key of keys) {
@@ -69,13 +71,14 @@ export async function createServer({
   });
 
   if (isProd) {
-    const root = path.resolve(__dirname, '../dist/app');
+    const root = path.resolve(dirname, '../../dist/app');
 
     await build({
       bundle: true,
       entryPoints: [configPath],
       outfile: path.join(root, 'config.js'),
       jsx: 'automatic',
+      jsxImportSource: 'react',
       format: 'esm',
       target: ['es2020', 'chrome90', 'firefox88', 'safari14', 'edge91'],
     });
@@ -84,7 +87,7 @@ export async function createServer({
     router.use(express.static(root));
   } else {
     const vite = await createViteServer({
-      root: path.resolve(__dirname, '../'),
+      root: path.resolve(dirname, '../../'),
       base: './',
       server: { middlewareMode: true },
       resolve: { alias: { '/config.js': configPath } },
