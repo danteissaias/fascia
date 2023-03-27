@@ -1,4 +1,5 @@
 import { transformFile } from '@swc/core';
+import react from '@vitejs/plugin-react-swc';
 import bodyParser from 'body-parser';
 import compression from 'compression';
 import { build } from 'esbuild';
@@ -11,6 +12,7 @@ import { Config } from './config';
 
 export interface ServerOptions {
   isProd?: boolean;
+  isDist?: boolean;
   configPath?: string;
   basePath?: string;
 }
@@ -46,6 +48,7 @@ async function getConfig(configPath: string) {
 
 export async function createServer({
   isProd = process.env.NODE_ENV === 'production',
+  isDist = true,
   configPath = getConfigPath(),
   basePath = '/',
 }: ServerOptions): Promise<ReturnType<typeof express>> {
@@ -88,10 +91,12 @@ export async function createServer({
     router.use(compression());
     router.use(express.static(root));
   } else {
-    const root = path.resolve(dirname, '../../');
+    const root = path.resolve(dirname, isDist ? '../../dist/app' : '../../');
 
     const vite = await createViteServer({
       root,
+      base: basePath,
+      plugins: isDist ? [react()] : [],
       server: { middlewareMode: true },
       resolve: { alias: { '/config.js': configPath } },
     });

@@ -3,3 +3,7 @@
 body {
   font-variant-numeric: tabular-nums;
 }
+
+.TableCell {
+  min-width: 0 !important;
+}
