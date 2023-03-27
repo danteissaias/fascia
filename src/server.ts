@@ -1,7 +1,7 @@
 import { transformFile } from '@swc/core';
 import react from '@vitejs/plugin-react-swc';
 import bodyParser from 'body-parser';
-import express from 'express';
+import express, { Router } from 'express';
 import * as path from 'path';
 import requireFromString from 'require-from-string';
 import { createServer as createViteServer } from 'vite';
@@ -10,6 +10,7 @@ import { Config } from './config';
 export interface ServerOptions {
   isProd?: boolean;
   configPath?: string;
+  basePath?: string;
 }
 
 const PRISMA_MODULE = 'node_modules/@prisma/client/index.js';
@@ -43,10 +44,12 @@ async function getConfig(configPath: string): Promise<Config> {
 export async function createServer({
   isProd = process.env.NODE_ENV === 'production',
   configPath = getConfigPath(),
+  basePath = '/',
 }: ServerOptions): Promise<ReturnType<typeof express>> {
   const { PrismaClient } = await getPrismaClient();
 
   const app = express();
+  const router = Router();
 
   const config = await getConfig(configPath);
   const prisma = new PrismaClient();
@@ -69,14 +72,16 @@ export async function createServer({
     resolve: { alias: { '@/config': configPath } },
   });
 
-  app.use(bodyParser.json());
+  router.use(bodyParser.json());
 
-  app.post('/rpc', async (req, res) => {
+  router.post('/rpc', async (req, res) => {
     const { modelName, operation, args = {} } = req.body;
     res.json(await prisma[modelName][operation](args));
   });
 
-  app.use(vite.middlewares);
+  router.use(vite.middlewares);
+
+  app.use(basePath, router);
 
   return app;
 }
