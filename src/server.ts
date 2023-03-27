@@ -79,7 +79,7 @@ export async function createServer({
     });
 
     router.use(compression());
-    router.use(express.static(root, { redirect: false }));
+    router.use(express.static(root));
   } else {
     const vite = await createViteServer({
       root: path.resolve(__dirname, '../'),
