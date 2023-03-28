@@ -4,6 +4,7 @@ import bodyParser from 'body-parser';
 import compression from 'compression';
 import { build } from 'esbuild';
 import express, { Router } from 'express';
+import expressBasicAuth from 'express-basic-auth';
 import * as path from 'path';
 import requireFromString from 'require-from-string';
 import { fileURLToPath } from 'url';
@@ -14,6 +15,7 @@ export interface ServerOptions {
   isProd?: boolean;
   isDist?: boolean;
   configPath?: string;
+  password?: string;
   basePath?: string;
 }
 
@@ -51,6 +53,7 @@ export async function createServer({
   isDist = true,
   configPath = getConfigPath(),
   basePath = '/',
+  password = process.env.DASH_PASSWORD || 'admin',
 }: ServerOptions): Promise<ReturnType<typeof express>> {
   const { PrismaClient } = await getPrismaClient();
 
@@ -68,6 +71,7 @@ export async function createServer({
   }
 
   router.use(bodyParser.json());
+  router.use(expressBasicAuth({ users: { admin: password }, challenge: true }));
 
   router.post('/rpc', async (req, res) => {
     const { modelName, operation, args = {} } = req.body;
