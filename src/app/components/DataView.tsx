@@ -23,26 +23,19 @@ import {
   TableCell,
   TableHead,
   TableRow,
-} from '@danteissaias/ds';
-import {
-  ColumnDef,
-  flexRender,
-  getCoreRowModel,
-  Table as ReactTable,
-  useReactTable,
-} from '@tanstack/react-table';
-import { createContext, useContext, useMemo, useState } from 'react';
-import { MoreHorizontal } from 'react-feather';
+} from "@danteissaias/ds";
+import { ColumnDef, flexRender, getCoreRowModel, Table as ReactTable, useReactTable } from "@tanstack/react-table";
+import { createContext, useContext, useMemo, useState } from "react";
+import { MoreHorizontal } from "react-feather";
 
-export interface ActionProps
-  extends Pick<MenuItemProps, 'disabled' | 'children' | 'danger'> {
+export interface ActionProps extends Pick<MenuItemProps, "disabled" | "children" | "danger"> {
   onAction: () => void | Promise<void>;
   confirm?: {
     title: string;
     description: JSX.Element | string;
     action: {
       text: string;
-      color?: 'gray' | 'green' | 'red';
+      color?: "gray" | "green" | "red";
     };
   };
 }
@@ -59,8 +52,7 @@ export const Action = ({ onAction, confirm, ...props }: ActionProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const { onConfirmOpenChange } = useContext(ActionContext);
 
-  if (!confirm || props.disabled)
-    return <MenuItem onSelect={onAction} {...props} />;
+  if (!confirm || props.disabled) return <MenuItem onSelect={onAction} {...props} />;
 
   return (
     <Confirm
@@ -89,44 +81,28 @@ export const Action = ({ onAction, confirm, ...props }: ActionProps) => {
   );
 };
 
-export const ActionSeperator = MenuSeparator;
-export const Actions = MenuItemGroup;
+export const ActionSeperator: typeof MenuSeparator = MenuSeparator;
+export const Actions: typeof MenuItemGroup = MenuItemGroup;
 
 export interface DataViewProps<T> {
   data: T[];
   columns: ColumnDef<T, any>[];
   rowActions: (data: { row: T; table: ReactTable<T> }) => JSX.Element;
-  headerActions: (data: {
-    rows: T[];
-    count: number;
-    table: ReactTable<T>;
-  }) => JSX.Element;
+  headerActions: (data: { rows: T[]; count: number; table: ReactTable<T> }) => JSX.Element;
   getRowId?: (row: T) => string;
 }
 
-export function DataView<T>({
-  data,
-  columns: defaultColumns,
-  headerActions,
-  rowActions,
-  getRowId,
-}: DataViewProps<T>) {
+export function DataView<T>({ data, columns: defaultColumns, headerActions, rowActions, getRowId }: DataViewProps<T>) {
   const columns = useMemo(
     () => [
       {
-        id: 'selection',
+        id: "selection",
         header: ({ table }) => {
           return (
             <Checkbox
-              checked={
-                table.getIsSomeRowsSelected()
-                  ? 'indeterminate'
-                  : table.getIsAllRowsSelected()
-              }
+              checked={table.getIsSomeRowsSelected() ? "indeterminate" : table.getIsAllRowsSelected()}
               onCheckedChange={(checked) =>
-                checked === 'indeterminate'
-                  ? table.toggleAllRowsSelected(true)
-                  : table.toggleAllRowsSelected(checked)
+                checked === "indeterminate" ? table.toggleAllRowsSelected(true) : table.toggleAllRowsSelected(checked)
               }
             />
           );
@@ -134,14 +110,10 @@ export function DataView<T>({
         cell: ({ row }) => {
           return (
             <Checkbox
-              checked={
-                row.getIsSomeSelected() ? 'indeterminate' : row.getIsSelected()
-              }
+              checked={row.getIsSomeSelected() ? "indeterminate" : row.getIsSelected()}
               disabled={!row.getCanSelect()}
               onCheckedChange={(checked) =>
-                checked === 'indeterminate'
-                  ? row.toggleSelected(true)
-                  : row.toggleSelected(checked)
+                checked === "indeterminate" ? row.toggleSelected(true) : row.toggleSelected(checked)
               }
             />
           );
@@ -149,11 +121,9 @@ export function DataView<T>({
       },
       ...defaultColumns,
       {
-        id: 'actions',
+        id: "actions",
         header: ({ table }) => {
-          const rows = table
-            .getSelectedRowModel()
-            .flatRows.map((row) => row.original);
+          const rows = table.getSelectedRowModel().flatRows.map((row) => row.original);
 
           const [hideMenu, setHideMenu] = useState(false);
 
@@ -162,38 +132,28 @@ export function DataView<T>({
               {rows.length > 0 ? (
                 <Badge
                   style={{
-                    position: 'absolute',
+                    position: "absolute",
                     left: -18,
-                    background: 'var(--gray-7)',
+                    background: "var(--gray-7)",
                     width: 22,
                     height: 21,
-                    lineHeight: '21px',
-                    color: 'var(--gray-12)',
-                    textAlign: 'center',
-                    borderRadius: 'var(--br-6)',
-                    boxShadow: 'inset 0 0 0 1px var(--gray-a8)',
+                    lineHeight: "21px",
+                    color: "var(--gray-12)",
+                    textAlign: "center",
+                    borderRadius: "var(--br-6)",
+                    boxShadow: "inset 0 0 0 1px var(--gray-a8)",
                   }}
                 >
                   {rows.length}
                 </Badge>
               ) : null}
               <Menu>
-                <MenuIconButton
-                  style={{ float: 'right' }}
-                  variant="ghost"
-                  size="1"
-                >
+                <MenuIconButton style={{ float: "right" }} variant="ghost" size="1">
                   <MoreHorizontal />
                 </MenuIconButton>
 
-                <MenuContent
-                  align="end"
-                  hidden={hideMenu}
-                  style={{ minWidth: 220 }}
-                >
-                  <ActionContext.Provider
-                    value={{ onConfirmOpenChange: setHideMenu }}
-                  >
+                <MenuContent align="end" hidden={hideMenu} style={{ minWidth: 220 }}>
+                  <ActionContext.Provider value={{ onConfirmOpenChange: setHideMenu }}>
                     {headerActions({
                       table,
                       rows,
@@ -210,22 +170,12 @@ export function DataView<T>({
 
           return (
             <Menu>
-              <MenuIconButton
-                style={{ float: 'right' }}
-                variant="ghost"
-                size="1"
-              >
+              <MenuIconButton style={{ float: "right" }} variant="ghost" size="1">
                 <MoreHorizontal />
               </MenuIconButton>
 
-              <MenuContent
-                align="end"
-                hidden={hideMenu}
-                style={{ minWidth: 220 }}
-              >
-                <ActionContext.Provider
-                  value={{ onConfirmOpenChange: setHideMenu }}
-                >
+              <MenuContent align="end" hidden={hideMenu} style={{ minWidth: 220 }}>
+                <ActionContext.Provider value={{ onConfirmOpenChange: setHideMenu }}>
                   {rowActions({ row: row.original, table })}
                 </ActionContext.Provider>
               </MenuContent>
@@ -252,12 +202,7 @@ export function DataView<T>({
           <TableRow key={headerGroup.id}>
             {headerGroup.headers.map((header) => (
               <TableCell key={header.id}>
-                {header.isPlaceholder
-                  ? null
-                  : flexRender(
-                      header.column.columnDef.header,
-                      header.getContext()
-                    )}
+                {header.isPlaceholder ? null : flexRender(header.column.columnDef.header, header.getContext())}
               </TableCell>
             ))}
           </TableRow>
@@ -268,9 +213,7 @@ export function DataView<T>({
         {table.getRowModel().rows.map((row) => (
           <TableRow key={row.id}>
             {row.getVisibleCells().map((cell) => (
-              <TableCell key={cell.id}>
-                {flexRender(cell.column.columnDef.cell, cell.getContext())}
-              </TableCell>
+              <TableCell key={cell.id}>{flexRender(cell.column.columnDef.cell, cell.getContext())}</TableCell>
             ))}
           </TableRow>
         ))}

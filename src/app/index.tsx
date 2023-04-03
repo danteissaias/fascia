@@ -1,27 +1,24 @@
-import '@danteissaias/ds/index.css';
+import "@danteissaias/ds/index.css";
+import "./app.css";
 
-import { Toaster } from '@danteissaias/ds';
-import { StrictMode } from 'react';
-import { createRoot } from 'react-dom/client';
+import { StrictMode } from "react";
+import { createRoot } from "react-dom/client";
 
-import App from './App';
-import type { Config } from '../config';
+import type { Config } from "../config";
+import { App } from "./App";
 
-const root = document.getElementById('root');
-if (!root) throw new Error('No root element found');
+const root = document.getElementById("root");
+if (!root) throw new Error("No root element found");
 
 async function getConfig(): Promise<Config> {
-  const configPath = new URL('./config.js', location.href);
+  const configPath = new URL("./config.js", location.href);
   return import(/* @vite-ignore */ configPath.href).then((mod) => mod.default);
 }
 
 const config = await getConfig();
 
-console.log(config);
-
 createRoot(root).render(
   <StrictMode>
-    <App config={config} />
-    <Toaster />
+    <App config={config} rpcPath="/rpc" />
   </StrictMode>
 );

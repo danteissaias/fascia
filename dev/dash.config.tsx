@@ -1,23 +1,23 @@
-import type { User } from '@prisma/client';
-import { defineConfig, defineRowAction, Badge } from '../src';
+import type { User } from "@prisma/client";
+import { defineConfig, defineRowAction, Badge } from "../src";
 
 const forgotPassword = defineRowAction<User>(({ document, toast }) => ({
-  name: 'Send password recovery',
+  name: "Send password recovery",
   onAction: async () => {
     // await fetch('/api/forgot-password', {
     //   method: 'POST',
     //   body: JSON.stringify({ email: document.email }),
     // });
-    toast.success('Password recovery email sent');
+    toast.success("Password recovery email sent");
   },
 }));
 
 const paymentHistory = defineRowAction<User>(({ document }) => ({
-  name: 'View payment history',
+  name: "View payment history",
   onAction: async () => {
     // const href =
     //   'https://dashboard.stripe.com/customers/' + document.customerId;
-    window.open('https://example.com');
+    window.open("https://example.com");
   },
 }));
 
@@ -27,12 +27,12 @@ export default defineConfig({
       where: (document) => ({ id: document.id }),
       rowActions: [forgotPassword, paymentHistory],
       columns: [
-        { accessorKey: 'name', header: 'Name' },
-        { accessorKey: 'email', header: 'Email' },
-        { accessorKey: 'createdAt', header: 'Created at' },
+        { accessorKey: "name", header: "Name" },
+        { accessorKey: "email", header: "Email" },
+        { accessorKey: "createdAt", header: "Created at" },
         {
-          accessorKey: 'type',
-          header: 'Type',
+          accessorKey: "type",
+          header: "Type",
           cell: ({ getValue }) => <Badge>{getValue()}</Badge>,
         },
       ],
@@ -40,7 +40,7 @@ export default defineConfig({
 
     Organization: {
       where: (document) => ({ id: document.id }),
-      columns: [{ accessorKey: 'name', header: 'Name' }],
+      columns: [{ accessorKey: "name", header: "Name" }],
     },
   },
 });

@@ -1,21 +1,21 @@
-import { PrismaClient } from '@prisma/client';
+import { PrismaClient } from "@prisma/client";
 
 const prisma = new PrismaClient();
 const users = [
-  { email: 'john@doe.com', name: 'John Doe', type: 'customer' },
-  { email: 'robert@roe.com', name: 'Robert Roe', type: 'customer' },
-  { email: 'dante@issaias.com', name: 'Dante Issaias', type: 'subuser' },
-  { email: 'jane@doe.com', name: 'Jane Doe', type: 'customer' },
+  { email: "john@doe.com", name: "John Doe", type: "customer" },
+  { email: "robert@roe.com", name: "Robert Roe", type: "customer" },
+  { email: "dante@issaias.com", name: "Dante Issaias", type: "subuser" },
+  { email: "jane@doe.com", name: "Jane Doe", type: "customer" },
 ];
 
 const orgs = [
-  { name: 'Google' },
-  { name: 'Facebook' },
-  { name: 'Apple' },
-  { name: 'Microsoft' },
-  { name: 'Netflix' },
-  { name: 'Amazon' },
-  { name: 'Disney' },
+  { name: "Google" },
+  { name: "Facebook" },
+  { name: "Apple" },
+  { name: "Microsoft" },
+  { name: "Netflix" },
+  { name: "Amazon" },
+  { name: "Disney" },
 ];
 
 async function main() {

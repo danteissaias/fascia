@@ -1,5 +1,5 @@
-import { ColumnDef } from '@tanstack/react-table';
-import { toast } from '@danteissaias/ds';
+import { ColumnDef } from "@tanstack/react-table";
+import { toast } from "@danteissaias/ds";
 
 export type HeaderAction<T> = (props: {
   documents: T[];
@@ -8,23 +8,19 @@ export type HeaderAction<T> = (props: {
 }) => {
   text: string;
   onHandle: () => void | Promise<void>;
-  type?: 'default' | 'danger';
+  type?: "default" | "danger";
 };
 
-export type RowAction<T> = (props: {
-  document: T;
-  removeDocument: () => Promise<void>;
-  toast: typeof toast;
-}) => {
+export type RowAction<T> = (props: { document: T; removeDocument: () => Promise<void>; toast: typeof toast }) => {
   name: string;
   onAction: () => void | Promise<void>;
-  type?: 'default' | 'danger';
+  type?: "default" | "danger";
   confirm?: {
     title: string;
     description: string;
     action: {
       text: string;
-      type?: 'default' | 'danger';
+      type?: "default" | "danger";
     };
   };
 };

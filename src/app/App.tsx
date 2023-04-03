@@ -1,72 +1,58 @@
-import './app.css';
+import { Button, Code, ScrollArea, Select, SelectItem, Stack, toast, Toaster } from "@danteissaias/ds";
+import objectHash from "object-hash";
+import { useEffect, useState } from "react";
 
-import {
-  Button,
-  Code,
-  ScrollArea,
-  Select,
-  SelectItem,
-  Stack,
-  Text,
-  toast,
-} from '@danteissaias/ds';
-import objectHash from 'object-hash';
-import { useEffect, useState } from 'react';
-
-import type { Config, Schema } from '../config';
-import { Action, Actions, ActionSeperator, DataView } from './components';
+import type { Config, Schema } from "../config";
+import { Action, Actions, ActionSeperator, DataView } from "./components";
 
 interface AppProps {
   config: Config;
+  rpcPath?: string;
 }
 
-export default function App({ config }: AppProps) {
+export function App({ config, rpcPath = "/rpc" }: AppProps) {
   const keys = Object.keys(config.schemas);
   const [active, setActive] = useState<keyof typeof config.schemas>(keys[0]);
   const schema = config.schemas[active];
   console.log(active);
 
   return (
-    <Stack align="center" mx="24" mt="40" gap="56">
-      <Stack gap="12" style={{ maxWidth: 1000, width: '100%' }}>
-        <Stack direction="row" justify="between">
-          <Select value={active} onValueChange={setActive}>
-            {keys.map((key) => (
-              <SelectItem key={key} value={key}>
-                {key}
-              </SelectItem>
-            ))}
-          </Select>
+    <>
+      <Toaster />
+      <Stack align="center" mx="24" mt="40" gap="56">
+        <Stack gap="12" style={{ maxWidth: 1000, width: "100%" }}>
+          <Stack direction="row" justify="between">
+            <Select value={active} onValueChange={setActive}>
+              {keys.map((key) => (
+                <SelectItem key={key} value={key}>
+                  {key}
+                </SelectItem>
+              ))}
+            </Select>
+          </Stack>
 
-          <Button size="1">Add record</Button>
+          <ModelView rpcPath={rpcPath} modelName={active} schema={schema} />
         </Stack>
-
-        <ModelView modelName={active} schema={schema} />
       </Stack>
-    </Stack>
+    </>
   );
 }
 
-declare global {
-  interface Window {
-    basePath: string;
-  }
-}
-
-const rpc = async (modelName: string, operation: string, args: any) => {
-  return await fetch('./rpc', {
-    method: 'POST',
+const rpc = async (rpcPath: string, modelName: string, operation: string, args: any) => {
+  return await fetch(rpcPath, {
+    method: "POST",
     body: JSON.stringify({ modelName, operation, args }),
-    headers: { 'Content-Type': 'application/json' },
+    headers: { "Content-Type": "application/json" },
   }).then((res) => res.json());
 };
 
 interface ModelViewProps<T> {
   modelName: string;
   schema: Schema<T>;
+  rpcPath: string;
 }
 
-function ModelView<T>({ modelName, schema }: ModelViewProps<T>) {
+function ModelView<T>({ rpcPath, modelName, schema }: ModelViewProps<T>) {
   const [data, setData] = useState<T[]>([]);
   const [refetch, setRefetch] = useState(0);
   const [removedIds, setRemovedIds] = useState<string[]>([]);
@@ -75,13 +61,13 @@ function ModelView<T>({ modelName, schema }: ModelViewProps<T>) {
 
   useEffect(() => {
     const { include } = schema;
-    rpc(modelName, 'findMany', { include }).then((data) => setData(data));
+    rpc(rpcPath, modelName, "findMany", { include }).then((data) => setData(data));
   }, [refetch, modelName]);
 
   const removeDocument = (document: T) => async () => {
     setRemovedIds((ids) => [...ids, getRowId(document)]);
 
-    rpc(modelName, 'delete', {
+    rpc(rpcPath, modelName, "delete", {
       where: schema.where(document),
     }).then((res) => console.log(res));
   };
@@ -89,14 +75,14 @@ function ModelView<T>({ modelName, schema }: ModelViewProps<T>) {
   const removeDocuments = (documents: T[]) => async () => {
     setRemovedIds((ids) => [...ids, ...documents.map(getRowId)]);
 
-    rpc(modelName, 'deleteMany', {
+    rpc(rpcPath, modelName, "deleteMany", {
       where: { OR: [...documents.map(schema.where)] },
     }).then((res) => console.log(res));
   };
 
   const rowActions = (document: T) =>
     (schema.rowActions
-      ? typeof schema.rowActions === 'function'
+      ? typeof schema.rowActions === "function"
         ? schema.rowActions(document)
         : schema.rowActions
       : []
@@ -119,19 +105,18 @@ function ModelView<T>({ modelName, schema }: ModelViewProps<T>) {
             danger
             disabled={count < 1}
             confirm={{
-              title: 'Are you sure?',
+              title: "Are you sure?",
               description: (
                 <>
-                  You are about to delete the following{' '}
-                  {count > 1 ? `${count} records` : 'record'}. This action
-                  cannot be undone.
+                  You are about to delete the following {count > 1 ? `${count} records` : "record"}. This action cannot
+                  be undone.
                   <ScrollArea
                     style={{
                       maxHeight: 200,
-                      display: 'flex',
-                      flexDirection: 'column',
-                      marginTop: 'var(--sp-12)',
-                      borderRadius: 'var(--br-4)',
+                      display: "flex",
+                      flexDirection: "column",
+                      marginTop: "var(--sp-12)",
+                      borderRadius: "var(--br-4)",
                     }}
                   >
                     <Code pre highlighted>
@@ -141,8 +126,8 @@ function ModelView<T>({ modelName, schema }: ModelViewProps<T>) {
                 </>
               ),
               action: {
-                text: count > 1 ? `Delete ${count} records` : 'Delete record',
-                color: 'red',
+                text: count > 1 ? `Delete ${count} records` : "Delete record",
+                color: "red",
               },
             }}
             onAction={async () => {
@@ -171,18 +156,17 @@ function ModelView<T>({ modelName, schema }: ModelViewProps<T>) {
             <Action
               danger
               confirm={{
-                title: 'Are you sure?',
+                title: "Are you sure?",
                 description: (
                   <>
-                    You are about to delete the following record. This action
-                    cannot be undone.
+                    You are about to delete the following record. This action cannot be undone.
                     <ScrollArea
                       style={{
                         maxHeight: 200,
-                        display: 'flex',
-                        flexDirection: 'column',
-                        marginTop: 'var(--sp-12)',
-                        borderRadius: 'var(--br-4)',
+                        display: "flex",
+                        flexDirection: "column",
+                        marginTop: "var(--sp-12)",
+                        borderRadius: "var(--br-4)",
                       }}
                     >
                       <Code pre highlighted>
@@ -192,8 +176,8 @@ function ModelView<T>({ modelName, schema }: ModelViewProps<T>) {
                   </>
                 ),
                 action: {
-                  text: 'Delete record',
-                  color: 'red',
+                  text: "Delete record",
+                  color: "red",
                 },
               }}
               onAction={async () => {
