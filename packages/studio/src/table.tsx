@@ -28,6 +28,35 @@ import { ColumnDef, flexRender, getCoreRowModel, Table as ReactTable, useReactTa
 import { createContext, useContext, useMemo, useState } from "react";
 import { MoreHorizontal } from "react-feather";
 
+console.log({
+  Badge,
+  Checkbox,
+  Confirm,
+  ConfirmAction,
+  ConfirmCancel,
+  ConfirmContent,
+  ConfirmDescription,
+  ConfirmFooter,
+  ConfirmHeader,
+  ConfirmTitle,
+  ConfirmTrigger,
+  Menu,
+  MenuContent,
+  MenuIconButton,
+  MenuItem,
+  MenuItemGroup,
+  MenuSeparator,
+  Stack,
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableRow,
+  flexRender,
+  getCoreRowModel,
+  useReactTable,
+});
+
 export interface ActionProps extends Pick<MenuItemProps, "disabled" | "children" | "danger"> {
   onAction: () => void | Promise<void>;
   confirm?: {
