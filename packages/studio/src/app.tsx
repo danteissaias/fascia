@@ -9,9 +9,10 @@ import { Action, Actions, ActionSeperator, DataView } from "./table";
 
 interface StudioProps {
   config: Config;
+  getBearerToken?: () => Promise<string>;
 }
 
-export function Studio({ config }: StudioProps) {
+export function Studio({ config, getBearerToken }: StudioProps) {
   const keys = Object.keys(config.schemas);
   const [active, setActive] = useState<keyof typeof config.schemas>(keys[0]);
   const schema = config.schemas[active];
@@ -37,10 +38,15 @@ export function Studio({ config }: StudioProps) {
   );
 }
 
-const rpc = async (modelName: string, operation: string, args: any) => {
+const rpc = async (modelName: string, operation: string, args: any, getBearerToken?: () => Promise<string>) => {
+  const headers = {
+    "Content-Type": "application/json",
+    Authorization: getBearerToken ? await getBearerToken() : "",
+  };
+
   return await fetch("/api/fascia", {
     method: "POST",
-    headers: { "Content-Type": "application/json" },
+    headers,
     body: JSON.stringify({
       action: "clientRequest",
       payload: { modelName, operation, args },
@@ -51,9 +57,10 @@ const rpc = async (modelName: string, operation: string, args: any) => {
 interface ModelViewProps<T> {
   modelName: string;
   schema: Schema<T>;
+  getBearerToken?: () => Promise<string>;
 }
 
-function ModelView<T>({ modelName, schema }: ModelViewProps<T>) {
+function ModelView<T>({ modelName, schema, getBearerToken }: ModelViewProps<T>) {
   const [data, setData] = useState<T[]>([]);
   const [refetch, setRefetch] = useState(0);
   const [removedIds, setRemovedIds] = useState<string[]>([]);
@@ -62,23 +69,33 @@ function ModelView<T>({ modelName, schema }: ModelViewProps<T>) {
 
   useEffect(() => {
     const { include } = schema;
-    rpc(modelName, "findMany", { include }).then((data) => setData(data));
+    rpc(modelName, "findMany", { include }, getBearerToken).then((data) => setData(data));
   }, [refetch, modelName]);
 
   const removeDocument = (document: T) => async () => {
     setRemovedIds((ids) => [...ids, getRowId(document)]);
 
-    rpc(modelName, "delete", {
-      where: schema.where(document),
-    }).then((res) => console.log(res));
+    rpc(
+      modelName,
+      "delete",
+      {
+        where: schema.where(document),
+      },
+      getBearerToken
+    ).then((res) => console.log(res));
   };
 
   const removeDocuments = (documents: T[]) => async () => {
     setRemovedIds((ids) => [...ids, ...documents.map(getRowId)]);
 
-    rpc(modelName, "deleteMany", {
-      where: { OR: [...documents.map(schema.where)] },
-    }).then((res) => console.log(res));
+    rpc(
+      modelName,
+      "deleteMany",
+      {
+        where: { OR: [...documents.map(schema.where)] },
+      },
+      getBearerToken
+    ).then((res) => console.log(res));
   };
 
   const rowActions = (document: T) =>
