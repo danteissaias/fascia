@@ -21,18 +21,18 @@ export function Studio({ config, getBearerToken }: StudioProps) {
     <Stack align="center" mx="24" mt="40" gap="56">
       <Stack gap="12" style={{ maxWidth: 1000, width: "100%" }}>
         <Stack direction="row" justify="between" align="center">
-          <Select placeholder="Choose a model" value={active} onValueChange={setActive}>
+          {/* <Select placeholder="Choose a model" value={active} onValueChange={setActive}>
             {keys.map((key) => (
               <SelectItem key={key} value={key}>
                 {key}
               </SelectItem>
             ))}
-          </Select>
+          </Select> */}
 
           {/* <Button size="1">Add record</Button> */}
         </Stack>
 
-        <ModelView modelName={active} schema={schema} />
+        <ModelView modelName={active} schema={schema} getBearerToken={getBearerToken} />
       </Stack>
     </Stack>
   );
