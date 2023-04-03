@@ -1,6 +1,6 @@
 {
   "name": "@fascia/server",
-  "version": "0.0.1",
+  "version": "0.0.5",
   "license": "MIT",
   "files": [
     "dist",
@@ -24,9 +24,6 @@
     "dev": "cd dev && tsx ../dev.ts",
     "build": "tsup",
     "prepublishOnly": "npm run build"
-  },
-  "dependencies": {
-    "@prisma/studio-pcw": "^0.483.0"
   },
   "devDependencies": {
     "@types/node": "^18.15.11",

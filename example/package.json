@@ -1,6 +1,7 @@
 {
   "private": true,
   "scripts": {
+    "seed": "tsx ./prisma/seed.ts",
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
@@ -14,12 +15,14 @@
     "next": "^13.2.4",
     "prisma": "^4.12.0",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react-dom": "^18.2.0",
+    "react-feather": "^2.0.10"
   },
   "devDependencies": {
     "@types/node": "^18.15.11",
     "@types/react": "^18.0.32",
     "@types/react-dom": "^18.0.11",
+    "tsx": "^3.12.6",
     "typescript": "^5.0.3"
   }
 }

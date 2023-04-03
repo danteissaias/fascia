@@ -1,4 +1,4 @@
 import { Studio } from "@fascia/studio";
-import dashConfig from "../dash.config";
+import dashConfig from "../fascia.config";
 
 export default () => <Studio config={dashConfig} />;

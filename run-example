@@ -1,0 +1,9 @@
+#!/bin/sh
+
+pnpm install
+pnpm turbo build
+
+cd example
+pnpm install
+pnpm seed
+pnpm dev

@@ -5,4 +5,5 @@ export default defineConfig({
   dts: true,
   clean: true,
   format: ["esm", "cjs"],
+  external: ["@prisma/client"],
 });
