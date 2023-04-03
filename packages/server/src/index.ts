@@ -15,17 +15,29 @@ function getPrismaClient(prismaPath = require.resolve("@prisma/client")) {
 
 export const createServer = (options: ServerOptions = {}): NextApiHandler => {
   const { prismaPath } = options;
-  const { PrismaClient } = getPrismaClient(prismaPath);
+  const { PrismaClient, Prisma } = getPrismaClient(prismaPath);
   const prisma = new PrismaClient();
 
   return async (req, res) => {
-    const query = req.body;
+    const { action, payload } = req.body;
 
-    if (!query.modelName) throw new Error("Invalid Prisma Clinet query");
-    const prismaClientModel = query.modelName.charAt(0).toLowerCase() + query.modelName.slice(1);
-    if (!(prismaClientModel in prisma)) throw new Error(`No model in schema with name \`${query.modelName}\``);
+    switch (action) {
+      case "clientRequest":
+        const { modelName, operation, args } = payload;
+        if (!modelName || !operation) throw new Error("Invalid Prisma Client query");
 
-    const response = await prisma[prismaClientModel][query.operation].call(null, query.args);
-    res.status(200).json(response);
+        const model = payload.modelName.charAt(0).toLowerCase() + modelName.slice(1);
+        if (model in prisma) {
+          const data = await prisma[model][operation].call(null, args);
+          return res.status(200).json(data);
+        } else throw new Error(`No model in schema with name \`${modelName}\``);
+
+      case "getDMMF":
+        const dmmf = Prisma.dmmf;
+        return res.status(200).json(dmmf);
+
+      default:
+        throw new Error(`Invalid action: ${action}`);
+    }
   };
 };

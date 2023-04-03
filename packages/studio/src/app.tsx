@@ -1,6 +1,6 @@
 import "./app.css";
 
-import { Button, ScrollArea, Select, SelectItem, Stack, Text, Toaster, toast } from "@danteissaias/ds";
+import { Button, ScrollArea, Select, SelectItem, Stack, Text, toast } from "@danteissaias/ds";
 import objectHash from "object-hash";
 import { useEffect, useState } from "react";
 
@@ -19,7 +19,7 @@ export function Studio({ config }: StudioProps) {
   return (
     <Stack align="center" mx="24" mt="40" gap="56">
       <Stack gap="12" style={{ maxWidth: 1000, width: "100%" }}>
-        <Stack direction="row" justify="between">
+        <Stack direction="row" justify="between" align="center">
           <Select value={active} onValueChange={setActive}>
             {keys.map((key) => (
               <SelectItem key={key} value={key}>
@@ -28,7 +28,7 @@ export function Studio({ config }: StudioProps) {
             ))}
           </Select>
 
-          <Button size="1">Add record</Button>
+          {/* <Button size="1">Add record</Button> */}
         </Stack>
 
         <ModelView modelName={active} schema={schema} />
@@ -37,17 +37,14 @@ export function Studio({ config }: StudioProps) {
   );
 }
 
-declare global {
-  interface Window {
-    basePath: string;
-  }
-}
-
 const rpc = async (modelName: string, operation: string, args: any) => {
   return await fetch("/api/fascia", {
     method: "POST",
-    body: JSON.stringify({ modelName, operation, args }),
     headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      action: "clientRequest",
+      payload: { modelName, operation, args },
+    }),
   }).then((res) => res.json());
 };
 

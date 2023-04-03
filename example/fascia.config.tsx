@@ -28,13 +28,13 @@ export default defineConfig({
       where: (document) => ({ id: document.id }),
       rowActions: [forgotPassword, paymentHistory],
       columns: [
-        { accessorKey: "name", header: "Name" },
-        { accessorKey: "email", header: "Email" },
-        { accessorKey: "createdAt", header: "Created at" },
+        { header: "Name", accessorKey: "name" },
+        { header: "Email", accessorKey: "email" },
+        { header: "Created at", accessorKey: "createdAt" },
         {
-          accessorKey: "type",
           header: "Type",
-          cell: ({ getValue }) => <Badge>{getValue()}</Badge>,
+          accessorKey: "type",
+          cell: ({ renderValue }) => <Badge>{renderValue()}</Badge>,
         },
       ],
     },
