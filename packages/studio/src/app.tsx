@@ -9,7 +9,7 @@ import { Action, Actions, ActionSeperator, DataView } from "./table";
 
 interface StudioProps {
   config: Config;
-  getBearerToken?: () => Promise<string>;
+  getBearerToken?: () => Promise<string> | string;
 }
 
 export function Studio({ config, getBearerToken }: StudioProps) {
@@ -38,7 +38,12 @@ export function Studio({ config, getBearerToken }: StudioProps) {
   );
 }
 
-const rpc = async (modelName: string, operation: string, args: any, getBearerToken?: () => Promise<string>) => {
+const rpc = async (
+  modelName: string,
+  operation: string,
+  args: any,
+  getBearerToken?: () => Promise<string> | string
+) => {
   const headers = {
     "Content-Type": "application/json",
     Authorization: getBearerToken ? await getBearerToken() : "",
@@ -57,7 +62,7 @@ const rpc = async (modelName: string, operation: string, args: any, getBearerTok
 interface ModelViewProps<T> {
   modelName: string;
   schema: Schema<T>;
-  getBearerToken?: () => Promise<string>;
+  getBearerToken?: () => Promise<string> | string;
 }
 
 function ModelView<T>({ modelName, schema, getBearerToken }: ModelViewProps<T>) {
