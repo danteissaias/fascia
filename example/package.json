@@ -10,7 +10,7 @@
   "dependencies": {
     "@danteissaias/ds": "^0.0.69",
     "@fascia/server": "link:../packages/server",
-    "@fascia/studio": "link:../packages/studio",
+    "@fascia/studio": "^0.0.14",
     "@prisma/client": "^4.12.0",
     "next": "^13.2.4",
     "prisma": "^4.12.0",

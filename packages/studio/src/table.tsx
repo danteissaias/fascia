@@ -14,9 +14,7 @@ import {
   MenuContent,
   MenuIconButton,
   MenuItem,
-  MenuItemGroup,
   MenuItemProps,
-  MenuSeparator,
   Stack,
   Table,
   TableBody,
@@ -27,35 +25,6 @@ import {
 import { ColumnDef, flexRender, getCoreRowModel, Table as ReactTable, useReactTable } from "@tanstack/react-table";
 import { createContext, useContext, useMemo, useState } from "react";
 import { MoreHorizontal } from "react-feather";
-
-console.log({
-  Badge,
-  Checkbox,
-  Confirm,
-  ConfirmAction,
-  ConfirmCancel,
-  ConfirmContent,
-  ConfirmDescription,
-  ConfirmFooter,
-  ConfirmHeader,
-  ConfirmTitle,
-  ConfirmTrigger,
-  Menu,
-  MenuContent,
-  MenuIconButton,
-  MenuItem,
-  MenuItemGroup,
-  MenuSeparator,
-  Stack,
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableRow,
-  flexRender,
-  getCoreRowModel,
-  useReactTable,
-});
 
 export interface ActionProps extends Pick<MenuItemProps, "disabled" | "children" | "danger"> {
   onAction: () => void | Promise<void>;
@@ -110,8 +79,7 @@ export const Action = ({ onAction, confirm, ...props }: ActionProps) => {
   );
 };
 
-export const ActionSeperator: typeof MenuSeparator = MenuSeparator;
-export const Actions: typeof MenuItemGroup = MenuItemGroup;
+export { MenuItemGroup as Actions, MenuSeparator as ActionSeperator } from "@danteissaias/ds";
 
 export interface DataViewProps<T> {
   data: T[];

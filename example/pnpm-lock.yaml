@@ -11,8 +11,8 @@ importers:
         specifier: link:../packages/server
         version: link:../packages/server
       '@fascia/studio':
-        specifier: link:../packages/studio
-        version: link:../packages/studio
+        specifier: ^0.0.14
+        version: 0.0.14(@types/react@18.0.32)(react-dom@18.2.0)(react@18.2.0)(typescript@5.0.3)
       '@prisma/client':
         specifier: ^4.12.0
         version: 4.12.0(prisma@4.12.0)
@@ -78,6 +78,31 @@ packages:
       react-dom: 18.2.0(react@18.2.0)
       react-feather: 2.0.10(react@18.2.0)
       sonner: 0.2.0(react-dom@18.2.0)(react@18.2.0)
+    transitivePeerDependencies:
+      - '@types/react'
+      - typescript
+    dev: false
+
+  /@danteissaias/ds@0.0.79(@types/react@18.0.32)(react-dom@18.2.0)(react-feather@2.0.10)(react@18.2.0)(typescript@5.0.3):
+    resolution: {integrity: sha512-I95xHWO0eXVdg7LMLVk3EEUUBcUiLafePZFZ9jrss+V4sgNXzilRnKjS9YKWWV4csyweBCvhZ/Jd2+WiRRiy2g==}
+    peerDependencies:
+      react: ^18.2.0
+      react-dom: ^18.2.0
+      react-feather: ^2.0.10
+    dependencies:
+      '@radix-ui/react-alert-dialog': 1.0.3(@types/react@18.0.32)(react-dom@18.2.0)(react@18.2.0)
+      '@radix-ui/react-checkbox': 1.0.3(react-dom@18.2.0)(react@18.2.0)
+      '@radix-ui/react-dialog': 1.0.3(@types/react@18.0.32)(react-dom@18.2.0)(react@18.2.0)
+      '@radix-ui/react-dropdown-menu': 2.0.4(@types/react@18.0.32)(react-dom@18.2.0)(react@18.2.0)
+      '@radix-ui/react-portal': 1.0.2(react-dom@18.2.0)(react@18.2.0)
+      '@radix-ui/react-scroll-area': 1.0.3(react-dom@18.2.0)(react@18.2.0)
+      '@radix-ui/react-select': 1.2.1(@types/react@18.0.32)(react-dom@18.2.0)(react@18.2.0)
+      '@radix-ui/react-slot': 1.0.1(react@18.2.0)
+      cva: /class-variance-authority@0.5.1(typescript@5.0.3)
+      react: 18.2.0
+      react-dom: 18.2.0(react@18.2.0)
+      react-feather: 2.0.10(react@18.2.0)
+      sonner: 0.3.0(react-dom@18.2.0)(react@18.2.0)
     transitivePeerDependencies:
       - '@types/react'
       - typescript
@@ -301,6 +326,23 @@ packages:
     requiresBuild: true
     dev: true
     optional: true
+
+  /@fascia/studio@0.0.14(@types/react@18.0.32)(react-dom@18.2.0)(react@18.2.0)(typescript@5.0.3):
+    resolution: {integrity: sha512-oXmuXPiWSMU2clnkHIhaAe/fGHjb1qzsjCaXSd0ubVjfLGeB8BE0JXdEJiA40Zyr/pSRtLLD5bM7Q0beiCapWw==}
+    peerDependencies:
+      react: ^18.2.0
+      react-dom: ^18.2.0
+    dependencies:
+      '@danteissaias/ds': 0.0.79(@types/react@18.0.32)(react-dom@18.2.0)(react-feather@2.0.10)(react@18.2.0)(typescript@5.0.3)
+      '@tanstack/react-table': 8.8.5(react-dom@18.2.0)(react@18.2.0)
+      object-hash: 3.0.0
+      react: 18.2.0
+      react-dom: 18.2.0(react@18.2.0)
+      react-feather: 2.0.10(react@18.2.0)
+    transitivePeerDependencies:
+      - '@types/react'
+      - typescript
+    dev: false
 
   /@floating-ui/core@0.7.3:
     resolution: {integrity: sha512-buc8BXHmG9l82+OQXOFU3Kr2XQx9ys01U/Q9HMIrZ300iLc8HLMgh7dcCqgYzAzf4BkoQvDcXf5Y+CuEZ5JBYg==}
@@ -1135,6 +1177,11 @@ packages:
     engines: {node: '>=0.10.0'}
     dev: false
 
+  /object-hash@3.0.0:
+    resolution: {integrity: sha512-RSn9F68PjH9HqtltsSnqYC1XXoWe9Bju5+213R98cNGttag9q9yAOTzdbsqvIa7aNm5WffBZFpWYr2aWrklWAw==}
+    engines: {node: '>= 6'}
+    dev: false
+
   /picocolors@1.0.0:
     resolution: {integrity: sha512-1fygroTLlHu66zi26VoTDv8yRgm0Fccecssto+MhsZ0D/DGW2sm8E8AjW7NU5VVTRt5GxbeZ5qBuJr+HyLYkjQ==}
     dev: false
@@ -1259,6 +1306,16 @@ packages:
 
   /sonner@0.2.0(react-dom@18.2.0)(react@18.2.0):
     resolution: {integrity: sha512-wxOkuIRoyF7nsXbz7JcpexGtSw58C9XZik6kVtKNxKpEEnfFsGyR08HQMabqEzAd0a8ARNuDH06UnEit4tvO+w==}
+    peerDependencies:
+      react: ^18.0.0
+      react-dom: ^18.0.0
+    dependencies:
+      react: 18.2.0
+      react-dom: 18.2.0(react@18.2.0)
+    dev: false
+
+  /sonner@0.3.0(react-dom@18.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-PJ/3k97N+/Kt/uu5tnPp3HFpFGF/iQs+hq+lAEtEQcEMc7o9S4axOV8pd7RKpFJoKt199aMUqHIgzs2re4MPbw==}
     peerDependencies:
       react: ^18.0.0
       react-dom: ^18.0.0

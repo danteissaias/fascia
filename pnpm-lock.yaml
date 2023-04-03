@@ -26,8 +26,8 @@ importers:
   packages/studio:
     dependencies:
       '@danteissaias/ds':
-        specifier: ^0.0.73
-        version: 0.0.73(@types/react@18.0.32)(react-dom@18.2.0)(react-feather@2.0.10)(react@18.2.0)(typescript@5.0.3)
+        specifier: ^0.0.79
+        version: 0.0.79(@types/react@18.0.32)(react-dom@18.2.0)(react-feather@2.0.10)(react@18.2.0)(typescript@5.0.3)
       '@tanstack/react-table':
         specifier: ^8.8.5
         version: 8.8.5(react-dom@18.2.0)(react@18.2.0)
@@ -72,8 +72,8 @@ packages:
       regenerator-runtime: 0.13.11
     dev: false
 
-  /@danteissaias/ds@0.0.73(@types/react@18.0.32)(react-dom@18.2.0)(react-feather@2.0.10)(react@18.2.0)(typescript@5.0.3):
-    resolution: {integrity: sha512-m7jYpwZ3hx/wXQ58Z2RTwydYOMn/n400D7IUZfslJOgoT9C6bAJruDVJHdiXBicmb2IuuzmyS4Ku5DXIjmciWw==}
+  /@danteissaias/ds@0.0.79(@types/react@18.0.32)(react-dom@18.2.0)(react-feather@2.0.10)(react@18.2.0)(typescript@5.0.3):
+    resolution: {integrity: sha512-I95xHWO0eXVdg7LMLVk3EEUUBcUiLafePZFZ9jrss+V4sgNXzilRnKjS9YKWWV4csyweBCvhZ/Jd2+WiRRiy2g==}
     peerDependencies:
       react: ^18.2.0
       react-dom: ^18.2.0
@@ -87,12 +87,11 @@ packages:
       '@radix-ui/react-scroll-area': 1.0.3(react-dom@18.2.0)(react@18.2.0)
       '@radix-ui/react-select': 1.2.1(@types/react@18.0.32)(react-dom@18.2.0)(react@18.2.0)
       '@radix-ui/react-slot': 1.0.1(react@18.2.0)
-      '@tanstack/react-table': 8.8.5(react-dom@18.2.0)(react@18.2.0)
       cva: /class-variance-authority@0.5.1(typescript@5.0.3)
       react: 18.2.0
       react-dom: 18.2.0(react@18.2.0)
       react-feather: 2.0.10(react@18.2.0)
-      sonner: 0.2.0(react-dom@18.2.0)(react@18.2.0)
+      sonner: 0.3.0(react-dom@18.2.0)(react@18.2.0)
     transitivePeerDependencies:
       - '@types/react'
       - typescript
@@ -1662,8 +1661,8 @@ packages:
     engines: {node: '>=8'}
     dev: true
 
-  /sonner@0.2.0(react-dom@18.2.0)(react@18.2.0):
-    resolution: {integrity: sha512-wxOkuIRoyF7nsXbz7JcpexGtSw58C9XZik6kVtKNxKpEEnfFsGyR08HQMabqEzAd0a8ARNuDH06UnEit4tvO+w==}
+  /sonner@0.3.0(react-dom@18.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-PJ/3k97N+/Kt/uu5tnPp3HFpFGF/iQs+hq+lAEtEQcEMc7o9S4axOV8pd7RKpFJoKt199aMUqHIgzs2re4MPbw==}
     peerDependencies:
       react: ^18.0.0
       react-dom: ^18.0.0
