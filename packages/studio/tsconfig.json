@@ -1,16 +1,15 @@
 {
   "compilerOptions": {
     "strict": true,
+    "strictNullChecks": true,
+    "allowSyntheticDefaultImports": true,
     "jsx": "react-jsx",
-    "lib": ["dom", "dom.iterable", "esnext"],
+    "lib": ["dom", "es2020"],
     "module": "esnext",
     "moduleResolution": "node",
-    "resolveJsonModule": true,
-    "target": "esnext",
-    "allowSyntheticDefaultImports": true,
-    "baseUrl": ".",
+    "skipLibCheck": true,
     "paths": { "@/*": ["./src/*"] }
   },
-  "include": ["**/*.ts", "**/*.tsx"],
+  "include": ["src/**/*.ts", "src/**/*.tsx"],
   "exclude": ["node_modules", "dist"]
 }

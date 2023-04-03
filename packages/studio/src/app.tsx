@@ -1,45 +1,50 @@
-import { Button, Code, ScrollArea, Select, SelectItem, Stack, toast, Toaster } from "@danteissaias/ds";
+import "./app.css";
+
+import { Button, ScrollArea, Select, SelectItem, Stack, Text, Toaster, toast } from "@danteissaias/ds";
 import objectHash from "object-hash";
 import { useEffect, useState } from "react";
 
-import type { Config, Schema } from "../config";
-import { Action, Actions, ActionSeperator, DataView } from "./components";
+import type { Config, Schema } from "./config";
+import { Action, Actions, ActionSeperator, DataView } from "./table";
 
-interface AppProps {
+interface StudioProps {
   config: Config;
-  rpcPath?: string;
 }
 
-export function App({ config, rpcPath = "/rpc" }: AppProps) {
+export function Studio({ config }: StudioProps) {
   const keys = Object.keys(config.schemas);
   const [active, setActive] = useState<keyof typeof config.schemas>(keys[0]);
   const schema = config.schemas[active];
-  console.log(active);
 
   return (
-    <>
-      <Toaster />
-      <Stack align="center" mx="24" mt="40" gap="56">
-        <Stack gap="12" style={{ maxWidth: 1000, width: "100%" }}>
-          <Stack direction="row" justify="between">
-            <Select value={active} onValueChange={setActive}>
-              {keys.map((key) => (
-                <SelectItem key={key} value={key}>
-                  {key}
-                </SelectItem>
-              ))}
-            </Select>
-          </Stack>
+    <Stack align="center" mx="24" mt="40" gap="56">
+      <Stack gap="12" style={{ maxWidth: 1000, width: "100%" }}>
+        <Stack direction="row" justify="between">
+          <Select value={active} onValueChange={setActive}>
+            {keys.map((key) => (
+              <SelectItem key={key} value={key}>
+                {key}
+              </SelectItem>
+            ))}
+          </Select>
 
-          <ModelView rpcPath={rpcPath} modelName={active} schema={schema} />
+          <Button size="1">Add record</Button>
         </Stack>
+
+        <ModelView modelName={active} schema={schema} />
       </Stack>
-    </>
+    </Stack>
   );
 }
 
-const rpc = async (rpcPath: string, modelName: string, operation: string, args: any) => {
-  return await fetch(rpcPath, {
+declare global {
+  interface Window {
+    basePath: string;
+  }
+}
+
+const rpc = async (modelName: string, operation: string, args: any) => {
+  return await fetch("/api/fascia", {
     method: "POST",
     body: JSON.stringify({ modelName, operation, args }),
     headers: { "Content-Type": "application/json" },
@@ -49,10 +54,9 @@ const rpc = async (rpcPath: string, modelName: string, operation: string, args: 
 interface ModelViewProps<T> {
   modelName: string;
   schema: Schema<T>;
-  rpcPath: string;
 }
 
-function ModelView<T>({ rpcPath, modelName, schema }: ModelViewProps<T>) {
+function ModelView<T>({ modelName, schema }: ModelViewProps<T>) {
   const [data, setData] = useState<T[]>([]);
   const [refetch, setRefetch] = useState(0);
   const [removedIds, setRemovedIds] = useState<string[]>([]);
@@ -61,13 +65,13 @@ function ModelView<T>({ rpcPath, modelName, schema }: ModelViewProps<T>) {
 
   useEffect(() => {
     const { include } = schema;
-    rpc(rpcPath, modelName, "findMany", { include }).then((data) => setData(data));
+    rpc(modelName, "findMany", { include }).then((data) => setData(data));
   }, [refetch, modelName]);
 
   const removeDocument = (document: T) => async () => {
     setRemovedIds((ids) => [...ids, getRowId(document)]);
 
-    rpc(rpcPath, modelName, "delete", {
+    rpc(modelName, "delete", {
       where: schema.where(document),
     }).then((res) => console.log(res));
   };
@@ -75,7 +79,7 @@ function ModelView<T>({ rpcPath, modelName, schema }: ModelViewProps<T>) {
   const removeDocuments = (documents: T[]) => async () => {
     setRemovedIds((ids) => [...ids, ...documents.map(getRowId)]);
 
-    rpc(rpcPath, modelName, "deleteMany", {
+    rpc(modelName, "deleteMany", {
       where: { OR: [...documents.map(schema.where)] },
     }).then((res) => console.log(res));
   };
@@ -119,9 +123,9 @@ function ModelView<T>({ rpcPath, modelName, schema }: ModelViewProps<T>) {
                       borderRadius: "var(--br-4)",
                     }}
                   >
-                    <Code pre highlighted>
+                    <Text whitespace="pre" code>
                       {JSON.stringify(rows, null, 2)}
-                    </Code>
+                    </Text>
                   </ScrollArea>
                 </>
               ),
@@ -169,9 +173,9 @@ function ModelView<T>({ rpcPath, modelName, schema }: ModelViewProps<T>) {
                         borderRadius: "var(--br-4)",
                       }}
                     >
-                      <Code pre highlighted>
+                      <Text whitespace="pre" code>
                         {JSON.stringify(row, null, 2)}
-                      </Code>
+                      </Text>
                     </ScrollArea>
                   </>
                 ),

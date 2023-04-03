@@ -1,0 +1,48 @@
+{
+  "name": "@fascia/studio",
+  "version": "0.0.1",
+  "license": "MIT",
+  "files": [
+    "dist",
+    "LICENSE",
+    "README.md"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "main": "./dist/index.js",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "require": "./dist/index.js",
+      "import": "./dist/index.mjs",
+      "types": "./dist/index.d.ts"
+    }
+  },
+  "scripts": {
+    "dev": "cd dev && tsx ../dev.ts",
+    "build": "tsup",
+    "prepublishOnly": "npm run build"
+  },
+  "dependencies": {
+    "@danteissaias/ds": "^0.0.70",
+    "@tanstack/react-table": "^8.8.5",
+    "object-hash": "^3.0.0",
+    "react-feather": "^2.0.10"
+  },
+  "devDependencies": {
+    "@types/node": "^18.15.11",
+    "@types/object-hash": "^3.0.2",
+    "@types/react": "^18.0.32",
+    "@types/react-dom": "^18.0.11",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "tsup": "^6.7.0",
+    "typescript": "^5.0.3"
+  },
+  "peerDependencies": {
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
+  }
+}

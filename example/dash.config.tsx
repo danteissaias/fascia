@@ -1,5 +1,6 @@
 import type { User } from "@prisma/client";
-import { defineConfig, defineRowAction, Badge } from "../src";
+import { defineConfig, defineRowAction } from "@fascia/studio";
+import { Badge } from "@danteissaias/ds";
 
 const forgotPassword = defineRowAction<User>(({ document, toast }) => ({
   name: "Send password recovery",

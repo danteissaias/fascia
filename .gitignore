@@ -1,11 +1,3 @@
-node_modules
 dist
-.env
-.vscode
-.DS_Store
-target
+node_modules
 .next
-next-env.d.ts
-.turbo
-test.tsx
-dev.db
