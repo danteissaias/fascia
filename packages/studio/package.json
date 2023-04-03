@@ -26,7 +26,7 @@
     "prepublishOnly": "npm run build"
   },
   "dependencies": {
-    "@danteissaias/ds": "^0.0.70",
+    "@danteissaias/ds": "^0.0.73",
     "@tanstack/react-table": "^8.8.5",
     "object-hash": "^3.0.0",
     "react-feather": "^2.0.10"

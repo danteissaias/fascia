@@ -123,7 +123,7 @@ function ModelView<T>({ modelName, schema }: ModelViewProps<T>) {
                       borderRadius: "var(--br-4)",
                     }}
                   >
-                    <Text whitespace="pre" code>
+                    <Text whitespace="pre" code block>
                       {JSON.stringify(rows, null, 2)}
                     </Text>
                   </ScrollArea>
@@ -173,7 +173,7 @@ function ModelView<T>({ modelName, schema }: ModelViewProps<T>) {
                         borderRadius: "var(--br-4)",
                       }}
                     >
-                      <Text whitespace="pre" code>
+                      <Text whitespace="pre" code block>
                         {JSON.stringify(row, null, 2)}
                       </Text>
                     </ScrollArea>

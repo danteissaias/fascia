@@ -26,8 +26,8 @@ importers:
   packages/studio:
     dependencies:
       '@danteissaias/ds':
-        specifier: ^0.0.70
-        version: 0.0.70(@types/react@18.0.32)(react-dom@18.2.0)(react-feather@2.0.10)(react@18.2.0)(typescript@5.0.3)
+        specifier: ^0.0.73
+        version: 0.0.73(@types/react@18.0.32)(react-dom@18.2.0)(react-feather@2.0.10)(react@18.2.0)(typescript@5.0.3)
       '@tanstack/react-table':
         specifier: ^8.8.5
         version: 8.8.5(react-dom@18.2.0)(react@18.2.0)
@@ -72,8 +72,8 @@ packages:
       regenerator-runtime: 0.13.11
     dev: false
 
-  /@danteissaias/ds@0.0.70(@types/react@18.0.32)(react-dom@18.2.0)(react-feather@2.0.10)(react@18.2.0)(typescript@5.0.3):
-    resolution: {integrity: sha512-xPJ3boKMxX5JT6kh5r3kUooteY4QJ0KAuNIg5NMH0biIVhYCvFj/Z/9aE1cKEjiJpbl+lbpqtMQw0XMnSWCReg==}
+  /@danteissaias/ds@0.0.73(@types/react@18.0.32)(react-dom@18.2.0)(react-feather@2.0.10)(react@18.2.0)(typescript@5.0.3):
+    resolution: {integrity: sha512-m7jYpwZ3hx/wXQ58Z2RTwydYOMn/n400D7IUZfslJOgoT9C6bAJruDVJHdiXBicmb2IuuzmyS4Ku5DXIjmciWw==}
     peerDependencies:
       react: ^18.2.0
       react-dom: ^18.2.0
