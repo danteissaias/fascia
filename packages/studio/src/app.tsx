@@ -1,6 +1,6 @@
 import "./app.css";
 
-import { ScrollArea, Select, SelectItem, Stack, Text, toast } from "@danteissaias/ds";
+import { ScrollArea, Select, SelectItem, Stack, Text, toast, Toaster } from "@danteissaias/ds";
 import objectHash from "object-hash";
 import { useEffect, useState } from "react";
 
@@ -18,23 +18,27 @@ export function Studio({ config, getBearerToken }: StudioProps) {
   const schema = config.schemas[active];
 
   return (
-    <Stack align="center" mx="24" mt="40" gap="56">
-      <Stack gap="12" style={{ maxWidth: 1000, width: "100%" }}>
-        <Stack direction="row" justify="between" align="center">
-          <Select placeholder="Choose a model" value={active} onValueChange={setActive}>
-            {keys.map((key) => (
-              <SelectItem key={key} value={key}>
-                {key}
-              </SelectItem>
-            ))}
-          </Select>
+    <main>
+      <Stack align="center" mx="24" mt="40" gap="56">
+        <Stack gap="12" style={{ maxWidth: 1000, width: "100%" }}>
+          <Stack direction="row" justify="between" align="center">
+            <Select placeholder="Choose a model" value={active} onValueChange={setActive}>
+              {keys.map((key) => (
+                <SelectItem key={key} value={key}>
+                  {key}
+                </SelectItem>
+              ))}
+            </Select>
 
-          {/* <Button size="1">Add record</Button> */}
+            {/* <Button size="1">Add record</Button> */}
+          </Stack>
+
+          <ModelView modelName={active} schema={schema} getBearerToken={getBearerToken} />
         </Stack>
-
-        <ModelView modelName={active} schema={schema} getBearerToken={getBearerToken} />
       </Stack>
-    </Stack>
+
+      <Toaster />
+    </main>
   );
 }
 
