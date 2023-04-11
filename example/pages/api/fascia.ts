@@ -1,4 +1,4 @@
-import { createServer } from "@fascia/server";
+import { createServer } from "@fascia/rpc";
 
 const handler = createServer();
 

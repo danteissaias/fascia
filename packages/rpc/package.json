@@ -1,5 +1,5 @@
 {
-  "name": "@fascia/server",
+  "name": "@fascia/rpc",
   "version": "0.0.6",
   "license": "MIT",
   "files": [

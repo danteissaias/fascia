@@ -1,6 +1,7 @@
 import type { User } from "@prisma/client";
-import { defineConfig, defineRowAction } from "@fascia/studio";
+import { defineConfig, defineRowAction, Schema } from "@fascia/web";
 import { Badge } from "@danteissaias/ds";
+import ms from "ms";
 
 const forgotPassword = defineRowAction<User>(({ document, toast }) => ({
   name: "Send password recovery",
@@ -22,22 +23,31 @@ const paymentHistory = defineRowAction<User>(({ document }) => ({
   },
 }));
 
+const User: Schema<User> = {
+  where: (document) => ({ id: document.id }),
+  rowActions: [forgotPassword, paymentHistory],
+  columns: [
+    { header: "Name", accessorKey: "name" },
+    { header: "Email", accessorKey: "email" },
+    {
+      header: "Created at",
+      accessorKey: "createdAt",
+      cell: ({ getValue }) => {
+        const value = getValue();
+        return ms(Date.now() - new Date(value).getTime()) + " ago";
+      },
+    },
+    {
+      header: "Type",
+      accessorKey: "type",
+      cell: ({ renderValue }) => <Badge>{renderValue()}</Badge>,
+    },
+  ],
+};
+
 export default defineConfig({
   schemas: {
-    User: {
-      where: (document) => ({ id: document.id }),
-      rowActions: [forgotPassword, paymentHistory],
-      columns: [
-        { header: "Name", accessorKey: "name" },
-        { header: "Email", accessorKey: "email" },
-        { header: "Created at", accessorKey: "createdAt" },
-        {
-          header: "Type",
-          accessorKey: "type",
-          cell: ({ renderValue }) => <Badge>{renderValue()}</Badge>,
-        },
-      ],
-    },
+    User,
 
     Organization: {
       where: (document) => ({ id: document.id }),

@@ -1,5 +1,1 @@
-module.exports = {
-  experimental: {
-    esmExternals: false,
-  },
-};
+module.exports = {};
