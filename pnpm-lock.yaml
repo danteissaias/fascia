@@ -81,8 +81,8 @@ importers:
   packages/web:
     dependencies:
       '@danteissaias/ds':
-        specifier: ^0.0.82
-        version: 0.0.82(@types/react@18.0.32)(next@13.2.4)(react-dom@18.2.0)(react@18.2.0)(typescript@5.0.3)
+        specifier: ^0.0.83
+        version: 0.0.83(@types/react@18.0.32)(next@13.2.4)(react-dom@18.2.0)(react@18.2.0)(typescript@5.0.3)
       '@tanstack/react-table':
         specifier: ^8.8.5
         version: 8.8.5(react-dom@18.2.0)(react@18.2.0)
@@ -145,8 +145,8 @@ packages:
       - typescript
     dev: false
 
-  /@danteissaias/ds@0.0.82(@types/react@18.0.32)(next@13.2.4)(react-dom@18.2.0)(react@18.2.0)(typescript@5.0.3):
-    resolution: {integrity: sha512-tZ3BAvgUY6dXPcgkv1kxHq4uNtjnORT4gv1ZSEf+D3389PeQzcn/OvZCfuNPsOjlozse7TxysO1a1gH9bumE6A==}
+  /@danteissaias/ds@0.0.83(@types/react@18.0.32)(next@13.2.4)(react-dom@18.2.0)(react@18.2.0)(typescript@5.0.3):
+    resolution: {integrity: sha512-R0gRTNG4PVk4CXx+ENkR/FE9R5zKH2Ih0Hh8+NIs6BNf5b/FU5IyNnnfHHsfpJaDz4tOmXM8xlTOvDtT8Wyqbw==}
     peerDependencies:
       react: ^18.2.0
       react-dom: ^18.2.0
