@@ -1,4 +1,3 @@
-import "../node_modules/@danteissaias/ds/dist/index.css";
 import "./app.css";
 
 import {
@@ -14,7 +13,7 @@ import {
   DropdownMenuGroup,
   DropdownMenuItem,
   DropdownMenuSeparator,
-  DsProvider,
+  InlineCode,
   ScrollArea,
   SearchInput,
   Select,
@@ -22,15 +21,14 @@ import {
   Stack,
   Table,
   TableProps,
-  Text,
+  ThemeProvider,
   toast,
-  Toaster,
   useTextFilter,
-} from "@danteissaias/ds";
+} from "@reactants/core";
 import objectHash from "object-hash";
 import { useEffect, useState } from "react";
 
-import type { Config, Schema } from "./config";
+import type { ActionDefinition, Config, RowAction, Schema } from "./config";
 
 interface StudioProps {
   config: Config;
@@ -44,7 +42,7 @@ export function Studio({ config, getBearerToken }: StudioProps) {
   const [search, setSearch] = useState("");
 
   return (
-    <DsProvider>
+    <ThemeProvider>
       <main>
         <Stack align="center" mx="24" mt="40" gap="56">
           <Stack gap="12" style={{ maxWidth: 1000, width: "100%" }}>
@@ -66,12 +64,12 @@ export function Studio({ config, getBearerToken }: StudioProps) {
               modelName={active}
               schema={schema}
               getBearerToken={getBearerToken}
-              filters={[[useTextFilter, search]]}
+              filters={[useTextFilter(search)]}
             />
           </Stack>
         </Stack>
       </main>
-    </DsProvider>
+    </ThemeProvider>
   );
 }
 
@@ -101,6 +99,51 @@ interface ModelViewProps<T> {
   schema: Schema<T>;
   getBearerToken?: () => Promise<string> | string;
   filters: TableProps<T, any>["filters"];
+}
+
+function RowAction({ confirm, name, type, onAction }: ActionDefinition) {
+  return confirm ? (
+    <AlertDialog>
+      <AlertDialogTrigger asChild>
+        <DropdownMenuItem danger={type === "danger"} onSelect={(e) => e.preventDefault()}>
+          {name}
+        </DropdownMenuItem>
+      </AlertDialogTrigger>
+
+      <AlertDialogContent>
+        <AlertDialogHeader>
+          <AlertDialogTitle>{confirm.title}</AlertDialogTitle>
+          <AlertDialogDescription>{confirm.description}</AlertDialogDescription>
+        </AlertDialogHeader>
+        <AlertDialogFooter>
+          <AlertDialogCancel>Cancel</AlertDialogCancel>
+          <AlertDialogAction onClick={() => onAction()} color={type === "danger" ? "red" : "gray"}>
+            {confirm.action}
+          </AlertDialogAction>
+        </AlertDialogFooter>
+      </AlertDialogContent>
+    </AlertDialog>
+  ) : (
+    <DropdownMenuItem onSelect={() => onAction()} danger={type === "danger"}>
+      {name}
+    </DropdownMenuItem>
+  );
+}
+
+function DeletePreview({ data }) {
+  return (
+    <ScrollArea
+      style={{
+        maxHeight: 200,
+        display: "flex",
+        flexDirection: "column",
+        marginTop: "var(--sp-12)",
+        borderRadius: "var(--br-4)",
+      }}
+    >
+      <InlineCode style={{ whiteSpace: "pre", display: "block" }}>{JSON.stringify(data, null, 2)}</InlineCode>
+    </ScrollArea>
+  );
 }
 
 function ModelView<T>({ modelName, schema, getBearerToken, filters }: ModelViewProps<T>) {
@@ -155,12 +198,21 @@ function ModelView<T>({ modelName, schema, getBearerToken, filters }: ModelViewP
       })
     );
 
+  const columns = schema.columns.map(({ header, accessor, render }) => {
+    return {
+      header: () => header,
+      id: typeof accessor === "function" ? accessor.name : accessor,
+      ...(typeof accessor === "function" ? { accessorFn: accessor } : { accessorKey: accessor }),
+      cell: render ? ({ row }) => render(row.original) : ({ renderValue }) => renderValue(),
+    };
+  });
+
   return (
     <Table
       sorting
       pagination
       caption={`Table of ${modelName} records`}
-      columns={schema.columns}
+      columns={columns}
       data={data.filter((d) => !removedIds.includes(getRowId(d)))}
       filters={filters}
       selectable
@@ -168,7 +220,6 @@ function ModelView<T>({ modelName, schema, getBearerToken, filters }: ModelViewP
         const { flatRows } = ctx.table.getSelectedRowModel();
         const rows = flatRows.map((row) => row.original);
         const count = flatRows.length;
-        console.log(count);
 
         return (
           <DropdownMenuGroup>
@@ -197,9 +248,9 @@ function ModelView<T>({ modelName, schema, getBearerToken, filters }: ModelViewP
                         borderRadius: "var(--br-4)",
                       }}
                     >
-                      <Text whitespace="pre" code block>
-                        {JSON.stringify(rows, null, 2)}
-                      </Text>
+                      <InlineCode style={{ whiteSpace: "pre", display: "block" }}>
+                        {JSON.stringify(data, null, 2)}
+                      </InlineCode>
                     </ScrollArea>
                   </AlertDialogDescription>
                 </AlertDialogHeader>
@@ -227,109 +278,34 @@ function ModelView<T>({ modelName, schema, getBearerToken, filters }: ModelViewP
 
         return (
           <DropdownMenuGroup>
-            {actions.map(({ name, onAction }, i) => (
-              <DropdownMenuItem key={i} onSelect={onAction}>
-                {name}
-              </DropdownMenuItem>
+            {actions.map((props, i) => (
+              <RowAction key={i} {...props} />
             ))}
 
             <DropdownMenuSeparator />
 
-            <AlertDialog>
-              <AlertDialogTrigger asChild>
-                <DropdownMenuItem danger onSelect={(e) => e.preventDefault()}>
-                  Delete record
-                </DropdownMenuItem>
-              </AlertDialogTrigger>
-
-              <AlertDialogContent>
-                <AlertDialogHeader>
-                  <AlertDialogTitle>Are you sure?</AlertDialogTitle>
-                  <AlertDialogDescription>
+            <RowAction
+              type="danger"
+              name="Delete record"
+              confirm={{
+                title: "Are you sure?",
+                description: (
+                  <>
                     You are about to delete the following record. This action cannot be undone.
-                    <ScrollArea
-                      style={{
-                        maxHeight: 200,
-                        display: "flex",
-                        flexDirection: "column",
-                        marginTop: "var(--sp-12)",
-                        borderRadius: "var(--br-4)",
-                      }}
-                    >
-                      <Text whitespace="pre" code block>
-                        {JSON.stringify(row, null, 2)}
-                      </Text>
-                    </ScrollArea>
-                  </AlertDialogDescription>
-                </AlertDialogHeader>
-                <AlertDialogFooter>
-                  <AlertDialogCancel>Cancel</AlertDialogCancel>
-                  <AlertDialogAction
-                    onClick={async () => {
-                      ctx.table.resetRowSelection();
-                      await removeDocument(row)();
-                      toast.success(`Deleted record`);
-                    }}
-                    color="red"
-                  >
-                    Delete record
-                  </AlertDialogAction>
-                </AlertDialogFooter>
-              </AlertDialogContent>
-            </AlertDialog>
+                    <DeletePreview data={row} />
+                  </>
+                ),
+                action: "Delete record",
+              }}
+              onAction={async () => {
+                ctx.table.resetRowSelection();
+                await removeDocument(row)();
+                toast.success(`Deleted record`);
+              }}
+            />
           </DropdownMenuGroup>
         );
       }}
-      // rowActions={({ row }) => {
-      //   const actions = rowActions(row);
-
-      //   return (
-      //     <Actions>
-      //       {actions.map(({ name, ...action }, i) => (
-      //         <Action key={i} {...action}>
-      //           {name}
-      //         </Action>
-      //       ))}
-
-      //       {actions.length > 0 ? <ActionSeperator /> : null}
-
-      //       <Action
-      //         danger
-      //         confirm={{
-      //           title: "Are you sure?",
-      //           description: (
-      //             <>
-      //               You are about to delete the following record. This action cannot be undone.
-      //               <ScrollArea
-      //                 style={{
-      //                   maxHeight: 200,
-      //                   display: "flex",
-      //                   flexDirection: "column",
-      //                   marginTop: "var(--sp-12)",
-      //                   borderRadius: "var(--br-4)",
-      //                 }}
-      //               >
-      //                 <Text whitespace="pre" code block>
-      //                   {JSON.stringify(row, null, 2)}
-      //                 </Text>
-      //               </ScrollArea>
-      //             </>
-      //           ),
-      //           action: {
-      //             text: "Delete record",
-      //             color: "red",
-      //           },
-      //         }}
-      //         onAction={async () => {
-      //           await removeDocument(row)();
-      //           toast.success(`Deleted record`);
-      //         }}
-      //       >
-      //         Delete record
-      //       </Action>
-      //     </Actions>
-      //   );
-      // }}
     />
   );
 }

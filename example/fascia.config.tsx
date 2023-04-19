@@ -1,6 +1,5 @@
 import type { User } from "@prisma/client";
-import { defineConfig, defineRowAction, Schema } from "@fascia/web";
-import { Badge } from "@danteissaias/ds";
+import { defineConfig, defineRowAction, Schema, Badge } from "@fascia/web";
 import ms from "ms";
 
 const forgotPassword = defineRowAction<User>(({ document, toast }) => ({
@@ -27,20 +26,17 @@ const User: Schema<User> = {
   where: (document) => ({ id: document.id }),
   rowActions: [forgotPassword, paymentHistory],
   columns: [
-    { header: "Name", accessorKey: "name" },
-    { header: "Email", accessorKey: "email" },
+    { header: "Name", accessor: "name" },
+    { header: "Email", accessor: "email" },
     {
       header: "Created at",
-      accessorKey: "createdAt",
-      cell: ({ getValue }) => {
-        const value = getValue();
-        return ms(Date.now() - new Date(value).getTime()) + " ago";
-      },
+      accessor: "createdAt",
+      render: (row) => ms(Date.now() - new Date(row.createdAt).getTime()) + " ago",
     },
     {
       header: "Type",
-      accessorKey: "type",
-      cell: ({ renderValue }) => <Badge>{renderValue()}</Badge>,
+      accessor: "type",
+      render: (row) => <Badge>{row.type}</Badge>,
     },
   ],
 };
@@ -48,10 +44,9 @@ const User: Schema<User> = {
 export default defineConfig({
   schemas: {
     User,
-
     Organization: {
       where: (document) => ({ id: document.id }),
-      columns: [{ accessorKey: "name", header: "Name" }],
+      columns: [{ accessor: "name", header: "Name" }],
     },
   },
 });

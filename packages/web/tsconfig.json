@@ -1,12 +1,9 @@
 {
   "compilerOptions": {
-    "strict": true,
-    "strictNullChecks": true,
     "allowSyntheticDefaultImports": true,
     "jsx": "react-jsx",
     "lib": ["dom", "es2020"],
-    "module": "esnext",
-    "moduleResolution": "node",
+    "moduleResolution": "node16",
     "skipLibCheck": true,
     "paths": { "@/*": ["./src/*"] }
   },

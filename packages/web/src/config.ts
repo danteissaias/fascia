@@ -1,23 +1,30 @@
-import { ColumnDef } from "@tanstack/react-table";
-import { toast } from "@danteissaias/ds";
+import { toast } from "@reactants/core";
 
-export type HeaderAction<T> = (props: {
-  documents: T[];
-  removeDocuments: () => Promise<void>;
-  toast: typeof toast;
-}) => {
-  text: string;
-  onHandle: () => void | Promise<void>;
-  type?: "default" | "danger";
-};
-
-export type RowAction<T> = (props: { document: T; removeDocument: () => Promise<void>; toast: typeof toast }) => {
+export type ActionDefinition = {
   name: string;
   onAction: () => void | Promise<void>;
+  type?: "default" | "danger";
+  confirm?: {
+    title: string;
+    description: React.ReactNode;
+    action: string;
+  };
 };
+
+export type RowAction<T> = (props: {
+  document: T;
+  removeDocument: () => Promise<void>;
+  toast: typeof toast;
+}) => ActionDefinition;
 
 export function defineRowAction<T>(action: RowAction<T>): RowAction<T> {
   return action;
+}
+
+interface ColumnDef<T> {
+  header?: React.ReactNode;
+  accessor: (keyof T & string) | ((document: T) => any);
+  render?: (document: T) => React.ReactNode;
 }
 
 export interface Schema<T> {
@@ -26,7 +33,7 @@ export interface Schema<T> {
   where: (document: T) => Record<string, any>;
 
   rowActions?: RowAction<T>[] | ((document: T) => RowAction<T>[]);
-  columns: ColumnDef<T, any>[];
+  columns: ColumnDef<T>[];
 }
 
 export interface Config {

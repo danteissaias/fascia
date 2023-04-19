@@ -23,66 +23,11 @@ importers:
         specifier: ^5.0.3
         version: 5.0.3
 
-  packages/server:
-    devDependencies:
-      '@types/node':
-        specifier: ^18.15.11
-        version: 18.15.11
-      next:
-        specifier: ^13.2.4
-        version: 13.2.4(react-dom@18.2.0)(react@18.2.0)
-      tsup:
-        specifier: ^6.7.0
-        version: 6.7.0(typescript@5.0.3)
-      typescript:
-        specifier: ^5.0.3
-        version: 5.0.3
-
-  packages/studio:
-    dependencies:
-      '@danteissaias/ds':
-        specifier: ^0.0.80
-        version: 0.0.80(next@13.2.4)(react-dom@18.2.0)(react@18.2.0)(typescript@5.0.3)
-      '@tanstack/react-table':
-        specifier: ^8.8.5
-        version: 8.8.5(react-dom@18.2.0)(react@18.2.0)
-      object-hash:
-        specifier: ^3.0.0
-        version: 3.0.0
-      react-feather:
-        specifier: ^2.0.10
-        version: 2.0.10(react@18.2.0)
-    devDependencies:
-      '@types/node':
-        specifier: ^18.15.11
-        version: 18.15.11
-      '@types/object-hash':
-        specifier: ^3.0.2
-        version: 3.0.2
-      '@types/react':
-        specifier: ^18.0.32
-        version: 18.0.32
-      '@types/react-dom':
-        specifier: ^18.0.11
-        version: 18.0.11
-      react:
-        specifier: ^18.2.0
-        version: 18.2.0
-      react-dom:
-        specifier: ^18.2.0
-        version: 18.2.0(react@18.2.0)
-      tsup:
-        specifier: ^6.7.0
-        version: 6.7.0(typescript@5.0.3)
-      typescript:
-        specifier: ^5.0.3
-        version: 5.0.3
-
   packages/web:
     dependencies:
-      '@danteissaias/ds':
-        specifier: ^0.0.83
-        version: 0.0.83(@types/react@18.0.32)(next@13.2.4)(react-dom@18.2.0)(react@18.2.0)(typescript@5.0.3)
+      '@reactants/core':
+        specifier: ^0.2.0
+        version: 0.2.0(@types/react@18.0.32)(next@13.2.4)(react-dom@18.2.0)(react@18.2.0)(typescript@5.0.3)
       '@tanstack/react-table':
         specifier: ^8.8.5
         version: 8.8.5(react-dom@18.2.0)(react@18.2.0)
@@ -127,53 +72,18 @@ packages:
       regenerator-runtime: 0.13.11
     dev: false
 
-  /@danteissaias/ds@0.0.80(next@13.2.4)(react-dom@18.2.0)(react@18.2.0)(typescript@5.0.3):
-    resolution: {integrity: sha512-guCjm9Sjnk3Hb8ye2ghqIa9pamkfk4eMAmpp485PNMy5iyE0HCHmXWvlaRxgRbGtI4YxylpyUP19+pJTcFcJUg==}
-    peerDependencies:
-      react: ^18.2.0
-      react-dom: ^18.2.0
+  /@emotion/is-prop-valid@0.8.8:
+    resolution: {integrity: sha512-u5WtneEAr5IDG2Wv65yhunPSMLIpuKsbuOktRojfrEiEvRyC85LgPMZI63cr7NUqT8ZIGdSVg8ZKGxIug4lXcA==}
+    requiresBuild: true
     dependencies:
-      '@tanstack/react-table': 8.8.5(react-dom@18.2.0)(react@18.2.0)
-      cva: /class-variance-authority@0.5.1(typescript@5.0.3)
-      next-themes: 0.2.1(next@13.2.4)(react-dom@18.2.0)(react@18.2.0)
-      react: 18.2.0
-      react-dom: 18.2.0(react@18.2.0)
-      react-feather: 2.0.10(react@18.2.0)
-      sonner: 0.3.0(react-dom@18.2.0)(react@18.2.0)
-    transitivePeerDependencies:
-      - next
-      - typescript
+      '@emotion/memoize': 0.7.4
     dev: false
+    optional: true
 
-  /@danteissaias/ds@0.0.83(@types/react@18.0.32)(next@13.2.4)(react-dom@18.2.0)(react@18.2.0)(typescript@5.0.3):
-    resolution: {integrity: sha512-R0gRTNG4PVk4CXx+ENkR/FE9R5zKH2Ih0Hh8+NIs6BNf5b/FU5IyNnnfHHsfpJaDz4tOmXM8xlTOvDtT8Wyqbw==}
-    peerDependencies:
-      react: ^18.2.0
-      react-dom: ^18.2.0
-    dependencies:
-      '@radix-ui/react-alert-dialog': 1.0.3(@types/react@18.0.32)(react-dom@18.2.0)(react@18.2.0)
-      '@radix-ui/react-checkbox': 1.0.3(react-dom@18.2.0)(react@18.2.0)
-      '@radix-ui/react-dialog': 1.0.3(@types/react@18.0.32)(react-dom@18.2.0)(react@18.2.0)
-      '@radix-ui/react-dropdown-menu': 2.0.4(@types/react@18.0.32)(react-dom@18.2.0)(react@18.2.0)
-      '@radix-ui/react-portal': 1.0.2(react-dom@18.2.0)(react@18.2.0)
-      '@radix-ui/react-radio-group': 1.1.2(react-dom@18.2.0)(react@18.2.0)
-      '@radix-ui/react-scroll-area': 1.0.3(react-dom@18.2.0)(react@18.2.0)
-      '@radix-ui/react-select': 1.2.1(@types/react@18.0.32)(react-dom@18.2.0)(react@18.2.0)
-      '@radix-ui/react-separator': 1.0.2(react-dom@18.2.0)(react@18.2.0)
-      '@radix-ui/react-slot': 1.0.1(react@18.2.0)
-      '@radix-ui/react-visually-hidden': 1.0.2(react-dom@18.2.0)(react@18.2.0)
-      '@tanstack/react-table': 8.8.5(react-dom@18.2.0)(react@18.2.0)
-      cva: /class-variance-authority@0.5.1(typescript@5.0.3)
-      next-themes: 0.2.1(next@13.2.4)(react-dom@18.2.0)(react@18.2.0)
-      react: 18.2.0
-      react-dom: 18.2.0(react@18.2.0)
-      react-feather: 2.0.10(react@18.2.0)
-      sonner: 0.3.0(react-dom@18.2.0)(react@18.2.0)
-    transitivePeerDependencies:
-      - '@types/react'
-      - next
-      - typescript
+  /@emotion/memoize@0.7.4:
+    resolution: {integrity: sha512-Ja/Vfqe3HpuzRsG1oBtWTHk2PGZ7GR+2Vz5iYGelAw8dx32K0y7PjVuxK6z1nMpZOqAFsRUPCkK1YjJ56qJlgw==}
     dev: false
+    optional: true
 
   /@esbuild/android-arm64@0.17.15:
     resolution: {integrity: sha512-0kOB6Y7Br3KDVgHeg8PRcvfLkq+AccreK///B4Z6fNZGr/tNHX0z2VywCc7PTeWp+bPvjA5WMvNXltHw5QjAIA==}
@@ -1018,6 +928,38 @@ packages:
       '@babel/runtime': 7.21.0
     dev: false
 
+  /@reactants/core@0.2.0(@types/react@18.0.32)(next@13.2.4)(react-dom@18.2.0)(react@18.2.0)(typescript@5.0.3):
+    resolution: {integrity: sha512-NulZcboh9YzVgWf5aHHstYn1OBb7uIOZmxfViPKoP9LtA/OjjKSEKWnVNWhnKVbUe/kA9xcFA86n1BHHXS8XMg==}
+    peerDependencies:
+      react: ^18.2.0
+      react-dom: ^18.2.0
+    dependencies:
+      '@radix-ui/react-alert-dialog': 1.0.3(@types/react@18.0.32)(react-dom@18.2.0)(react@18.2.0)
+      '@radix-ui/react-checkbox': 1.0.3(react-dom@18.2.0)(react@18.2.0)
+      '@radix-ui/react-dialog': 1.0.3(@types/react@18.0.32)(react-dom@18.2.0)(react@18.2.0)
+      '@radix-ui/react-dropdown-menu': 2.0.4(@types/react@18.0.32)(react-dom@18.2.0)(react@18.2.0)
+      '@radix-ui/react-portal': 1.0.2(react-dom@18.2.0)(react@18.2.0)
+      '@radix-ui/react-radio-group': 1.1.2(react-dom@18.2.0)(react@18.2.0)
+      '@radix-ui/react-scroll-area': 1.0.3(react-dom@18.2.0)(react@18.2.0)
+      '@radix-ui/react-select': 1.2.1(@types/react@18.0.32)(react-dom@18.2.0)(react@18.2.0)
+      '@radix-ui/react-separator': 1.0.2(react-dom@18.2.0)(react@18.2.0)
+      '@radix-ui/react-slot': 1.0.1(react@18.2.0)
+      '@radix-ui/react-visually-hidden': 1.0.2(react-dom@18.2.0)(react@18.2.0)
+      '@tanstack/react-table': 8.8.5(react-dom@18.2.0)(react@18.2.0)
+      clsx: 1.2.1
+      cva: /class-variance-authority@0.5.2(typescript@5.0.3)
+      framer-motion: 10.12.4(react-dom@18.2.0)(react@18.2.0)
+      next-themes: 0.2.1(next@13.2.4)(react-dom@18.2.0)(react@18.2.0)
+      react: 18.2.0
+      react-dom: 18.2.0(react@18.2.0)
+      react-feather: 2.0.10(react@18.2.0)
+      sonner: 0.3.0(react-dom@18.2.0)(react@18.2.0)
+    transitivePeerDependencies:
+      - '@types/react'
+      - next
+      - typescript
+    dev: false
+
   /@swc/helpers@0.4.14:
     resolution: {integrity: sha512-4C7nX/dvpzB7za4Ql9K81xK3HPxCpHMgwTZVyf+9JQ6VUbn9jjZVN7/Nkdz/Ugzs2CSjqnL/UPXroiVBVHUWUw==}
     dependencies:
@@ -1147,8 +1089,8 @@ packages:
       fsevents: 2.3.2
     dev: true
 
-  /class-variance-authority@0.5.1(typescript@5.0.3):
-    resolution: {integrity: sha512-J3tAiPbmBhPffsZ6Le3cR4o5hN78XBTst5NwCJJF7hAkZYIDuHQKV03Tb89zMDAxIONmM+DFRooMUCK5nTWpvQ==}
+  /class-variance-authority@0.5.2(typescript@5.0.3):
+    resolution: {integrity: sha512-j7Qqw3NPbs4IpO80gvdACWmVvHiLLo5MECacUBLnJG17CrLpWaQ7/4OaWX6P0IO1j2nvZ7AuSfBS/ImtEUZJGA==}
     peerDependencies:
       typescript: '>= 4.5.5 < 6'
     peerDependenciesMeta:
@@ -1160,6 +1102,11 @@ packages:
 
   /client-only@0.0.1:
     resolution: {integrity: sha512-IV3Ou0jSMzZrd3pZ48nLkT9DA7Ag1pnPzaiQhpW7c3RbcqqzvzzVu+L8gfqMp/8IM2MQtSiqaCxrrcfu8I8rMA==}
+
+  /clsx@1.2.1:
+    resolution: {integrity: sha512-EcR6r5a8bj6pu3ycsa/E/cKVGuTgZJZdsyUYHOksG/UHIiKfjxzRxYJpyVBwYaQeOvghal9fcc4PidlgzugAQg==}
+    engines: {node: '>=6'}
+    dev: false
 
   /commander@4.1.1:
     resolution: {integrity: sha512-NOKm8xhkzAjzFx8B2v5OAHT+u5pRQc2UCa2Vq9jYL/31o2wi9mxBA7LIFs3sV5VSC49z6pEhfbMULvShKj26WA==}
@@ -1273,6 +1220,24 @@ packages:
     dependencies:
       to-regex-range: 5.0.1
     dev: true
+
+  /framer-motion@10.12.4(react-dom@18.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-9gLtv8T6dui0tujHROR+VM3kdJyKiFCFiD94IQE+0OuX6LaIyXtdVpviokVdrHSb1giWhmmX4yzoucALMx6mtw==}
+    peerDependencies:
+      react: ^18.0.0
+      react-dom: ^18.0.0
+    peerDependenciesMeta:
+      react:
+        optional: true
+      react-dom:
+        optional: true
+    dependencies:
+      react: 18.2.0
+      react-dom: 18.2.0(react@18.2.0)
+      tslib: 2.5.0
+    optionalDependencies:
+      '@emotion/is-prop-valid': 0.8.8
+    dev: false
 
   /fs.realpath@1.0.0:
     resolution: {integrity: sha512-OO0pH2lK6a0hZnAdau5ItzHPI6pUlvI7jMVnxUQRtw4owF2wk8lOSabtGDCTP4Ggrg2MbGnWO9X8K1t4+fGMDw==}
