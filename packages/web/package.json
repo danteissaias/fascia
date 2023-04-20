@@ -21,17 +21,20 @@
     }
   },
   "scripts": {
-    "dev": "cd dev && tsx ../dev.ts",
+    "dev": "tsup --watch",
     "build": "tsup",
     "prepublishOnly": "npm run build"
   },
   "dependencies": {
-    "@reactants/core": "^0.2.0",
+    "@reactants/core": "^0.4.0",
     "@tanstack/react-table": "^8.8.5",
+    "ms": "^2.1.3",
     "object-hash": "^3.0.0",
-    "react-feather": "^2.0.10"
+    "react-feather": "^2.0.10",
+    "superjson": "^1.12.2"
   },
   "devDependencies": {
+    "@types/ms": "^0.7.31",
     "@types/node": "^18.15.11",
     "@types/object-hash": "^3.0.2",
     "@types/react": "^18.0.32",

@@ -27,11 +27,18 @@ interface ColumnDef<T> {
   render?: (document: T) => React.ReactNode;
 }
 
+interface Filter<TData, TValue = any> {
+  type: "select" | "picker";
+  options: { label: string; value: TValue }[];
+  filter: (value: TValue) => (data: TData[]) => TData[];
+  defaultValue?: TValue;
+}
+
 export interface Schema<T> {
   // TODO: Infer these from the model
   include?: Record<string, boolean>;
-  where: (document: T) => Record<string, any>;
-
+  where?: (document: T) => Record<string, any>;
+  filters?: Filter<T>[];
   rowActions?: RowAction<T>[] | ((document: T) => RowAction<T>[]);
   columns: ColumnDef<T>[];
 }

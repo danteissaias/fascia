@@ -1,4 +1,5 @@
 import type { NextApiHandler } from "next";
+import superjson from "superjson";
 
 export interface ServerOptions {
   prismaPath?: string;
@@ -29,7 +30,7 @@ export const createServer = (options: ServerOptions = {}): NextApiHandler => {
         const model = payload.modelName.charAt(0).toLowerCase() + modelName.slice(1);
         if (model in prisma) {
           const data = await prisma[model][operation].call(null, args);
-          return res.status(200).json(data);
+          return res.status(200).json(superjson.serialize(data));
         } else throw new Error(`No model in schema with name \`${modelName}\``);
 
       case "getDMMF":

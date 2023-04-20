@@ -10,10 +10,13 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
   AlertDialogTrigger,
+  CodeBlock,
   DropdownMenuGroup,
   DropdownMenuItem,
   DropdownMenuSeparator,
   InlineCode,
+  Picker,
+  PickerItem,
   ScrollArea,
   SearchInput,
   Select,
@@ -22,12 +25,13 @@ import {
   Table,
   TableProps,
   ThemeProvider,
+  Toaster,
   toast,
   useTextFilter,
 } from "@reactants/core";
 import objectHash from "object-hash";
 import { useEffect, useState } from "react";
-
+import superjson from "superjson";
 import type { ActionDefinition, Config, RowAction, Schema } from "./config";
 
 interface StudioProps {
@@ -41,12 +45,45 @@ export function Studio({ config, getBearerToken }: StudioProps) {
   const schema = config.schemas[active];
   const [search, setSearch] = useState("");
 
+  const [filterValues, setFilterValues] = useState<Record<string, any>>(
+    schema.filters?.reduce((acc, filter, i) => {
+      acc[filter.type + i] = filter.defaultValue;
+      return acc;
+    }, {})
+  );
+
   return (
     <ThemeProvider>
       <main>
         <Stack align="center" mx="24" mt="40" gap="56">
-          <Stack gap="12" style={{ maxWidth: 1000, width: "100%" }}>
+          <Stack gap="16" style={{ maxWidth: 1000, width: "100%" }}>
             <Stack direction="row" justify="between" align="center">
+              <Stack direction="row" gap="16">
+                {schema.filters?.map((filter, i) => {
+                  switch (filter.type) {
+                    case "picker":
+                      return (
+                        <Picker
+                          key={i}
+                          value={filterValues[filter.type + i]}
+                          defaultValue={filter.defaultValue}
+                          onValueChange={(value) =>
+                            setFilterValues((values) => ({ ...values, [filter.type + i]: value }))
+                          }
+                        >
+                          {filter.options.map((item) => (
+                            <PickerItem key={item.value} value={item.value}>
+                              {item.label}
+                            </PickerItem>
+                          ))}
+                        </Picker>
+                      );
+                  }
+                })}
+
+                <SearchInput onChange={(e) => setSearch(e.target.value)} value={search} />
+              </Stack>
+
               <Select placeholder="Choose a model" value={active} onValueChange={setActive}>
                 {keys.map((key) => (
                   <SelectItem key={key} value={key}>
@@ -54,21 +91,24 @@ export function Studio({ config, getBearerToken }: StudioProps) {
                   </SelectItem>
                 ))}
               </Select>
-              {/* <Button size="1">Add record</Button> */}
-              <Stack direction="row">
-                <SearchInput onChange={(e) => setSearch(e.target.value)} value={search} />
-              </Stack>
             </Stack>
 
             <ModelView
+              key={active}
               modelName={active}
               schema={schema}
               getBearerToken={getBearerToken}
-              filters={[useTextFilter(search)]}
+              filters={[
+                useTextFilter(search),
+                ...(schema.filters
+                  ? schema.filters.map((filter, i) => filter.filter(filterValues[filter.type + i]))
+                  : []),
+              ]}
             />
           </Stack>
         </Stack>
       </main>
+      <Toaster />
     </ThemeProvider>
   );
 }
@@ -91,7 +131,9 @@ const rpc = async (
       action: "clientRequest",
       payload: { modelName, operation, args },
     }),
-  }).then((res) => res.json());
+  })
+    .then((res) => res.json())
+    .then((res) => superjson.deserialize<any>(res));
 };
 
 interface ModelViewProps<T> {
@@ -141,7 +183,7 @@ function DeletePreview({ data }) {
         borderRadius: "var(--br-4)",
       }}
     >
-      <InlineCode style={{ whiteSpace: "pre", display: "block" }}>{JSON.stringify(data, null, 2)}</InlineCode>
+      <CodeBlock>{JSON.stringify(data, null, 2)}</CodeBlock>
     </ScrollArea>
   );
 }
@@ -151,7 +193,7 @@ function ModelView<T>({ modelName, schema, getBearerToken, filters }: ModelViewP
   const [refetch, setRefetch] = useState(0);
   const [removedIds, setRemovedIds] = useState<string[]>([]);
 
-  const getRowId = (row: T) => objectHash(schema.where(row));
+  const getRowId = (row: T) => objectHash(schema.where ? schema.where(row) : { id: row["id"] });
 
   useEffect(() => {
     const { include } = schema;
@@ -165,7 +207,7 @@ function ModelView<T>({ modelName, schema, getBearerToken, filters }: ModelViewP
       modelName,
       "delete",
       {
-        where: schema.where(document),
+        where: schema.where ? schema.where(document) : { id: document["id"] },
       },
       getBearerToken
     ).then((res) => console.log(res));
@@ -209,6 +251,7 @@ function ModelView<T>({ modelName, schema, getBearerToken, filters }: ModelViewP
 
   return (
     <Table
+      fixed
       sorting
       pagination
       caption={`Table of ${modelName} records`}

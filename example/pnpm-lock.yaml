@@ -14,8 +14,8 @@ importers:
         specifier: ^4.12.0
         version: 4.12.0(prisma@4.12.0)
       '@reactants/core':
-        specifier: ^0.2.0
-        version: 0.2.0(@types/react@18.0.32)(next@13.2.4)(react-dom@18.2.0)(react@18.2.0)(typescript@5.0.3)
+        specifier: ^0.4.0
+        version: 0.4.0(@types/react@18.0.32)(next@13.2.4)(react-dom@18.2.0)(react@18.2.0)(typescript@5.0.3)
       '@types/ms':
         specifier: ^0.7.31
         version: 0.7.31
@@ -955,8 +955,8 @@ packages:
       '@babel/runtime': 7.21.0
     dev: false
 
-  /@reactants/core@0.2.0(@types/react@18.0.32)(next@13.2.4)(react-dom@18.2.0)(react@18.2.0)(typescript@5.0.3):
-    resolution: {integrity: sha512-NulZcboh9YzVgWf5aHHstYn1OBb7uIOZmxfViPKoP9LtA/OjjKSEKWnVNWhnKVbUe/kA9xcFA86n1BHHXS8XMg==}
+  /@reactants/core@0.4.0(@types/react@18.0.32)(next@13.2.4)(react-dom@18.2.0)(react@18.2.0)(typescript@5.0.3):
+    resolution: {integrity: sha512-SQYb2vH+2CtKVNXulRL6ynhNnVUwLguoCUccjlNCX7rDv8kaWwfWACbnLkcPiaZEbnvQXALzu3B0iU3wGAP/5Q==}
     peerDependencies:
       react: ^18.2.0
       react-dom: ^18.2.0

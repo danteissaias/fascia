@@ -1,6 +1,5 @@
 import type { User } from "@prisma/client";
-import { defineConfig, defineRowAction, Schema, Badge } from "@fascia/web";
-import ms from "ms";
+import { formatDate, defineConfig, defineRowAction, Schema, Badge } from "@fascia/web";
 
 const forgotPassword = defineRowAction<User>(({ document, toast }) => ({
   name: "Send password recovery",
@@ -23,15 +22,31 @@ const paymentHistory = defineRowAction<User>(({ document }) => ({
 }));
 
 const User: Schema<User> = {
-  where: (document) => ({ id: document.id }),
   rowActions: [forgotPassword, paymentHistory],
+  filters: [
+    {
+      type: "picker",
+      options: [
+        { label: "All", value: "all" },
+        { label: "Customer", value: "customer" },
+        { label: "Subuser", value: "subuser" },
+      ],
+      defaultValue: "all",
+      filter: (value) => (rows) => {
+        return rows.filter((row) => {
+          if (value === "all") return true;
+          else return row.type === value;
+        });
+      },
+    },
+  ],
   columns: [
     { header: "Name", accessor: "name" },
     { header: "Email", accessor: "email" },
     {
       header: "Created at",
       accessor: "createdAt",
-      render: (row) => ms(Date.now() - new Date(row.createdAt).getTime()) + " ago",
+      render: (row) => formatDate(row.createdAt),
     },
     {
       header: "Type",
@@ -45,7 +60,6 @@ export default defineConfig({
   schemas: {
     User,
     Organization: {
-      where: (document) => ({ id: document.id }),
       columns: [{ accessor: "name", header: "Name" }],
     },
   },
