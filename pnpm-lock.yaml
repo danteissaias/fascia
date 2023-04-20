@@ -30,8 +30,8 @@ importers:
   packages/web:
     dependencies:
       '@reactants/core':
-        specifier: ^0.5.0
-        version: 0.5.0(@types/react@18.0.32)(next@13.2.4)(react-dom@18.2.0)(react@18.2.0)(typescript@5.0.3)
+        specifier: ^0.6.0
+        version: 0.6.0(@types/react@18.0.32)(next@13.2.4)(react-dom@18.2.0)(react@18.2.0)(typescript@5.0.3)
       '@tanstack/react-table':
         specifier: ^8.8.5
         version: 8.8.5(react-dom@18.2.0)(react@18.2.0)
@@ -941,8 +941,8 @@ packages:
       '@babel/runtime': 7.21.0
     dev: false
 
-  /@reactants/core@0.5.0(@types/react@18.0.32)(next@13.2.4)(react-dom@18.2.0)(react@18.2.0)(typescript@5.0.3):
-    resolution: {integrity: sha512-dUkx8q20hFeslNnO/Mp/8otA9pnZhqzMm7sXGzRXakJwJJulJyCjj2zx9AVJO9QVIg7OExDka/7hjw5O0eXoNQ==}
+  /@reactants/core@0.6.0(@types/react@18.0.32)(next@13.2.4)(react-dom@18.2.0)(react@18.2.0)(typescript@5.0.3):
+    resolution: {integrity: sha512-RBXxcO8LQEDgh48mP4pQof77MAE75LuQeJ/4qSfG4XE8FLA00xC7ISXRLKTv2cV2KNyk+rVgro+TAzK/nzg3EA==}
     peerDependencies:
       react: ^18.2.0
       react-dom: ^18.2.0
