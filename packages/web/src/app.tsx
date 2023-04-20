@@ -56,7 +56,7 @@ export function Studio({ config, getBearerToken }: StudioProps) {
     <ThemeProvider>
       <main>
         <Stack align="center" mx="24" mt="40" gap="56">
-          <Stack gap="16" style={{ maxWidth: 1000, width: "100%" }}>
+          <Stack gap="16" style={{ maxWidth: 1400, width: "100%" }}>
             <Stack direction="row" justify="between" align="center">
               <Stack direction="row" gap="16">
                 {schema.filters?.map((filter, i) => {
