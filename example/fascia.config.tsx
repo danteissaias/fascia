@@ -1,5 +1,6 @@
 import type { User } from "@prisma/client";
 import { formatDate, defineConfig, defineRowAction, Schema, Badge } from "@fascia/web";
+import ms from "ms";
 
 const forgotPassword = defineRowAction<User>(({ document, toast }) => ({
   name: "Send password recovery",
@@ -25,6 +26,7 @@ const User: Schema<User> = {
   rowActions: [forgotPassword, paymentHistory],
   filters: [
     {
+      id: "type",
       type: "picker",
       options: [
         { label: "All", value: "all" },
@@ -36,6 +38,24 @@ const User: Schema<User> = {
         return rows.filter((row) => {
           if (value === "all") return true;
           else return row.type === value;
+        });
+      },
+    },
+
+    {
+      id: "recent",
+      type: "picker",
+      options: [
+        { label: "All", value: "all" },
+        { label: "Recent", value: "recent" },
+      ],
+      defaultValue: "all",
+      show: (ctx) => ctx.type === "customer",
+      filter: (value) => (rows) => {
+        return rows.filter((r) => {
+          if (value === "all") return true;
+          const daysAgo = Date.now() - ms("2 days");
+          return r.createdAt.getTime() <= daysAgo;
         });
       },
     },

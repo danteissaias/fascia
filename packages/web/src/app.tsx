@@ -47,10 +47,14 @@ export function Studio({ config, getBearerToken }: StudioProps) {
 
   const [filterValues, setFilterValues] = useState<Record<string, any>>(
     schema.filters?.reduce((acc, filter, i) => {
-      acc[filter.type + i] = filter.defaultValue;
+      acc[filter.id] = filter.defaultValue;
       return acc;
     }, {})
   );
+
+  const schemaFilters = schema.filters?.map((filter) => {
+    return filter.filter(filterValues[filter.id]);
+  });
 
   return (
     <ThemeProvider>
@@ -60,16 +64,15 @@ export function Studio({ config, getBearerToken }: StudioProps) {
             <Stack direction="row" justify="between" align="center">
               <Stack direction="row" gap="16">
                 {schema.filters?.map((filter, i) => {
+                  if (filter.show && !filter.show(filterValues)) return null;
                   switch (filter.type) {
                     case "picker":
                       return (
                         <Picker
                           key={i}
-                          value={filterValues[filter.type + i]}
+                          value={filterValues[filter.id]}
                           defaultValue={filter.defaultValue}
-                          onValueChange={(value) =>
-                            setFilterValues((values) => ({ ...values, [filter.type + i]: value }))
-                          }
+                          onValueChange={(value) => setFilterValues((values) => ({ ...values, [filter.id]: value }))}
                         >
                           {filter.options.map((item) => (
                             <PickerItem key={item.value} value={item.value}>
@@ -98,12 +101,7 @@ export function Studio({ config, getBearerToken }: StudioProps) {
               modelName={active}
               schema={schema}
               getBearerToken={getBearerToken}
-              filters={[
-                useTextFilter(search),
-                ...(schema.filters
-                  ? schema.filters.map((filter, i) => filter.filter(filterValues[filter.type + i]))
-                  : []),
-              ]}
+              filters={[useTextFilter(search), ...(schemaFilters || [])]}
             />
           </Stack>
         </Stack>

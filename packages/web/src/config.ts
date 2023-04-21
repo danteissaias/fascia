@@ -28,9 +28,11 @@ interface ColumnDef<T> {
 }
 
 interface Filter<TData, TValue = any> {
+  id: string;
   type: "select" | "picker";
   options: { label: string; value: TValue }[];
   filter: (value: TValue) => (data: TData[]) => TData[];
+  show?: (ctx: Record<string, any>) => boolean;
   defaultValue?: TValue;
 }
 
