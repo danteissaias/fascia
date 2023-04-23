@@ -21,17 +21,17 @@
     }
   },
   "scripts": {
-    "dev": "cd dev && tsx ../dev.ts",
+    "dev": "tsup --watch",
     "build": "tsup",
     "prepublishOnly": "npm run build"
   },
   "devDependencies": {
-    "@types/node": "^18.15.11",
-    "next": "^13.2.4",
+    "@types/node": "^18.15.13",
+    "next": "^13.3.0",
     "tsup": "^6.7.0",
-    "typescript": "^5.0.3"
+    "typescript": "^5.0.4"
   },
   "dependencies": {
-    "superjson": "^1.12.2"
+    "superjson": "^1.12.3"
   }
 }

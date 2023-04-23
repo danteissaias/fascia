@@ -1,12 +1,11 @@
 {
   "compilerOptions": {
-    "allowSyntheticDefaultImports": true,
     "jsx": "react-jsx",
-    "lib": ["dom", "es2020"],
-    "moduleResolution": "node16",
-    "skipLibCheck": true,
-    "paths": { "@/*": ["./src/*"] }
+    "lib": ["es2018", "dom"],
+    "moduleResolution": "node",
+    "esModuleInterop": true,
+    "resolveJsonModule": true
   },
-  "include": ["src/**/*.ts", "src/**/*.tsx"],
+  "include": ["**/*.ts", "**/*.tsx"],
   "exclude": ["node_modules", "dist"]
 }

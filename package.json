@@ -1,5 +1,8 @@
 {
+  "scripts": {
+    "dev": "turbo dev"
+  },
   "dependencies": {
-    "turbo": "^1.8.8"
+    "turbo": "^1.9.3"
   }
 }

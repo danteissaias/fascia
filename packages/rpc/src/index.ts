@@ -30,12 +30,14 @@ export const createServer = (options: ServerOptions = {}): NextApiHandler => {
         const model = payload.modelName.charAt(0).toLowerCase() + modelName.slice(1);
         if (model in prisma) {
           const data = await prisma[model][operation].call(null, args);
-          return res.status(200).json(superjson.serialize(data));
+          const resp = superjson.serialize(data);
+          return res.status(200).json(resp);
         } else throw new Error(`No model in schema with name \`${modelName}\``);
 
       case "getDMMF":
         const dmmf = Prisma.dmmf;
-        return res.status(200).json(dmmf);
+        const resp = superjson.serialize(dmmf);
+        return res.status(200).json(resp);
 
       default:
         throw new Error(`Invalid action: ${action}`);

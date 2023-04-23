@@ -1,14 +1,11 @@
 {
   "compilerOptions": {
-    "strict": true,
-    "strictNullChecks": true,
-    "noUncheckedIndexedAccess": true,
-    "lib": ["dom", "es2020"],
-    "module": "esnext",
+    "jsx": "react-jsx",
+    "lib": ["es2018", "dom"],
     "moduleResolution": "node",
-    "skipLibCheck": true,
-    "paths": { "@/*": ["./src/*"] }
+    "esModuleInterop": true,
+    "resolveJsonModule": true
   },
-  "include": ["src/**/*.ts", "src/**/*.tsx"],
+  "include": ["**/*.ts", "**/*.tsx"],
   "exclude": ["node_modules", "dist"]
 }
